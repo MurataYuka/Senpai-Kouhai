@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>よいまがき</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div id="app">
+  <div id="bg" class="bg t2"></div>
+  <div id="edge" class="edge"></div>
+  <svg id="lay" class="lay" viewBox="-500 -400 1000 800" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <defs>
+      <linearGradient id="lg1" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0" stop-color="#fff6dc" stop-opacity=".95"/>
+        <stop offset=".55" stop-color="#ffe7a8" stop-opacity=".55"/>
+        <stop offset="1" stop-color="#ffd27a" stop-opacity="0"/>
+      </linearGradient>
+      <linearGradient id="lg2" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0" stop-color="#0b0708" stop-opacity=".98"/>
+        <stop offset=".6" stop-color="#1c1216" stop-opacity=".8"/>
+        <stop offset=".92" stop-color="#ff7a2a" stop-opacity=".35"/>
+        <stop offset="1" stop-color="#ff7a2a" stop-opacity="0"/>
+      </linearGradient>
+      <path id="lp" d="M0,0 C60,-50 170,-96 300,-92 C282,-78 276,-66 286,-58 C236,-54 226,-42 244,-32 C196,-28 186,-16 204,-6 C160,-2 150,8 166,18 C120,20 70,18 0,10 Z"/>
+    </defs>
+    <g transform="translate(70,-40)"><g class="lw" style="--a:-38deg;--c:-128deg"><use href="#lp" fill="url(#lg1)"/></g></g>
+    <g transform="translate(80,10)"><g class="lw" style="--a:-4deg;--c:-150deg"><use href="#lp" fill="url(#lg1)"/></g></g>
+    <g transform="translate(70,60)"><g class="lw" style="--a:32deg;--c:-170deg"><use href="#lp" fill="url(#lg1)"/></g></g>
+    <g transform="translate(-70,-40) scale(-1,1)"><g class="lw" style="--a:-38deg;--c:-128deg"><use href="#lp" fill="url(#lg1)"/></g></g>
+    <g transform="translate(-80,10) scale(-1,1)"><g class="lw" style="--a:-4deg;--c:-150deg"><use href="#lp" fill="url(#lg1)"/></g></g>
+    <g transform="translate(-70,60) scale(-1,1)"><g class="lw" style="--a:32deg;--c:-170deg"><use href="#lp" fill="url(#lg1)"/></g></g>
+  </svg>
+  <div id="frame" class="frame"></div>
+
+  <div id="stage" class="stage" hidden>
+    <div id="ctrl" class="ctrl">
+      <button type="button" data-act="log">ログ</button>
+      <button type="button" data-act="auto" id="btnAuto">オート</button>
+      <button type="button" data-act="skip" id="btnSkip">スキップ</button>
+      <button type="button" data-act="menu">メニュー</button>
+    </div>
+    <div id="box" class="box">
+      <div id="txt" class="txt"></div>
+      <div id="more" class="more" aria-hidden="true">▾</div>
+    </div>
+  </div>
+
+  <div id="card" class="card" hidden><div class="plate"><div class="cn" id="cardNum"></div><div class="ct" id="cardTitle"></div></div></div>
+  <div id="fade" class="fade"></div>
+
+  <section id="title" class="scr title">
+    <div class="tt">
+      <div class="tsub">大正十一年　宵ヶ洲</div>
+      <h1>よいまがき</h1>
+      <nav class="tmenu">
+        <button type="button" data-act="new">はじめから</button>
+        <button type="button" data-act="load">つづきから</button>
+        <button type="button" data-act="quick" id="btnQuickT">直前の選択肢から</button>
+        <button type="button" data-act="gallery">エンディング再生</button>
+      </nav>
+    </div>
+  </section>
+
+  <section id="namein" class="scr ov" hidden>
+    <div class="panel">
+      <p class="ph">あなたの名前を入力してください。</p>
+      <input id="nameBox" type="text" maxlength="8" autocomplete="off" placeholder="">
+      <p class="note">空欄のままなら、既定の名前になります。</p>
+      <div class="row"><button type="button" data-act="nameok">決定</button><button type="button" data-act="nameback">戻る</button></div>
+    </div>
+  </section>
+
+  <section id="menu" class="scr ov" hidden>
+    <div class="panel">
+      <p class="ph">メニュー</p>
+      <div class="col">
+        <button type="button" data-act="save" class="ingame">セーブ</button>
+        <button type="button" data-act="load">ロード</button>
+        <button type="button" data-act="quick" class="ingame" id="btnQuickM">直前の選択肢に戻る</button>
+        <button type="button" data-act="log">ログ</button>
+        <button type="button" data-act="speed" id="btnSpeed">文字の速さ：ふつう</button>
+        <button type="button" data-act="totitle">タイトルへ</button>
+        <button type="button" data-act="close">閉じる</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="slots" class="scr ov" hidden>
+    <div class="panel wide">
+      <p class="ph" id="slotsHead">セーブ</p>
+      <ol id="slotList" class="slist"></ol>
+      <div class="row"><button type="button" data-act="close">閉じる</button></div>
+    </div>
+  </section>
+
+  <section id="gallery" class="scr ov" hidden>
+    <div class="panel wide">
+      <p class="ph">エンディング再生</p>
+      <ol id="galList" class="glist"></ol>
+      <div class="row"><button type="button" data-act="close">閉じる</button></div>
+    </div>
+  </section>
+
+  <section id="log" class="scr ov" hidden>
+    <div class="panel wide tall">
+      <p class="ph">ログ</p>
+      <div id="logBody" class="logb"></div>
+      <div class="row"><button type="button" data-act="close">閉じる</button></div>
+    </div>
+  </section>
+
+  <section id="confirm" class="scr ov top" hidden>
+    <div class="panel">
+      <p class="ph" id="cfMsg"></p>
+      <div class="row"><button type="button" id="cfYes">はい</button><button type="button" id="cfNo">いいえ</button></div>
+    </div>
+  </section>
+
+  <div id="snd" class="snd">
+    <button type="button" id="sndMute" aria-label="消音の切り替え">♪</button>
+    <input id="sndVol" type="range" min="0" max="100" step="1" aria-label="音量">
+  </div>
+
+  <div id="toast" class="toast" hidden></div>
+</div>
+
+<script src="js/core.js"></script>
+<script src="data/ch01.js"></script>
+<script src="data/ch02.js"></script>
+<script src="data/ch03.js"></script>
+<script src="data/ch04.js"></script>
+<script src="data/ch05.js"></script>
+<script src="data/ch06.js"></script>
+<script src="data/ch07.js"></script>
+<script src="data/ch08.js"></script>
+<script src="data/ch09.js"></script>
+<script src="data/ch10.js"></script>
+<script src="data/ch11.js"></script>
+<script src="data/ch12.js"></script>
+<script src="data/ch13.js"></script>
+<script src="data/ch14.js"></script>
+<script src="data/ch15.js"></script>
+<script src="data/ed1.js"></script>
+<script src="data/ed2.js"></script>
+<script src="data/ed3.js"></script>
+<script src="data/ed4.js"></script>
+<script src="data/ed5.js"></script>
+<script src="data/ed6.js"></script>
+<script src="data/ed7.js"></script>
+<script src="data/ed8.js"></script>
+<script src="data/ed9.js"></script>
+<script src="js/snd.js"></script>
+<script src="js/ui.js"></script>
+</body>
+</html>

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>あさなぎ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;600&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- 奥：背景レイヤー（テキストボックスの後ろ） -->
+<div id="back">
+  <div id="space"><div id="orb"></div></div>
+  <canvas id="lyB"></canvas>
+  <div id="lyA"><div class="lyA-seam"></div></div>
+  <div id="dimmer"></div>
+</div>
+
+<!-- 枠（計器パネル）。文字は入れない -->
+<div id="frame"><i class="cn tl"></i><i class="cn tr"></i><i class="cn bl"></i><i class="cn br"></i></div>
+
+<!-- 計器の表示（揺らさない） -->
+<div id="hud">
+  <div id="hudL">ASANAGI&nbsp;/&nbsp;<span id="hudChap"></span></div>
+  <div id="hudR"><span class="lbl">乗員</span><span id="crew">7</span></div>
+  <canvas id="wave"></canvas>
+</div>
+
+<!-- 本文 -->
+<div id="game" hidden>
+  <div id="box" aria-live="polite"><div id="lines"></div><div id="cursor">▼</div></div>
+  <div id="choices" hidden></div>
+  <div id="menu">
+    <button data-act="skip" id="btnSkip" title="Sキー">スキップ</button>
+    <button data-act="log">ログ</button>
+    <button data-act="save">セーブ</button>
+    <button data-act="load">ロード</button>
+    <button data-act="qload">直前の選択肢</button>
+    <button data-act="config">設定</button>
+    <button data-act="title">タイトル</button>
+  </div>
+  <div id="card" hidden><div id="cardNo"></div><div id="cardName"></div></div>
+</div>
+
+<!-- タイトル -->
+<div id="titleScr" class="scr">
+  <h1>あさなぎ</h1>
+  <div class="sub">ASANAGI</div>
+  <nav>
+    <button data-act="new">はじめから</button>
+    <button data-act="load">ロード</button>
+    <button data-act="qload" id="tQload">直前の選択肢から</button>
+    <button data-act="gallery">エンディング一覧</button>
+    <button data-act="config">設定</button>
+  </nav>
+</div>
+
+<!-- 名前入力 -->
+<div id="nameScr" class="scr" hidden>
+  <p>あなたの名前を入力してください。</p>
+  <input id="nameIn" maxlength="10" autocomplete="off">
+  <div class="row"><button id="nameOk">決定</button><button id="nameBack">戻る</button></div>
+</div>
+
+<!-- パネル類 -->
+<div id="panel" class="panel" hidden>
+  <div class="phead"><span id="ptitle"></span><button id="pclose">閉じる</button></div>
+  <div id="pbody"></div>
+</div>
+
+<div id="endScr" class="scr" hidden><div id="endMark">終</div><div id="endSub"></div><button id="endOk">タイトルへ</button></div>
+
+<div id="toast" hidden></div>
+<div id="dbg" hidden></div>
+
+<script src="js/core.js"></script>
+<script src="data/ch01.js"></script>
+<script src="data/ch02.js"></script>
+<script src="data/ch03.js"></script>
+<script src="data/ch04.js"></script>
+<script src="data/ch05.js"></script>
+<script src="data/ch06.js"></script>
+<script src="data/ch07.js"></script>
+<script src="data/ch08.js"></script>
+<script src="data/ch09.js"></script>
+<script src="data/ch10.js"></script>
+<script src="data/ch11.js"></script>
+<script src="data/ch12.js"></script>
+<script src="data/ch13.js"></script>
+<script src="data/ch14.js"></script>
+<script src="data/ch15.js"></script>
+<script src="data/ed01.js"></script>
+<script src="data/ed02.js"></script>
+<script src="data/ed03.js"></script>
+<script src="data/ed04.js"></script>
+<script src="data/ed05.js"></script>
+<script src="data/ed06.js"></script>
+<script src="data/ed07.js"></script>
+<script src="data/ed08.js"></script>
+<script src="data/meta.js"></script>
+<script src="js/fx.js"></script>
+<script src="js/ui.js"></script>
+</body>
+</html>

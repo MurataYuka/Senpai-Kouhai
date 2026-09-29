@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ADV</title>
+<link rel="stylesheet" href="engine/engine.css">
+<link rel="stylesheet" href="game/theme.css">
+</head>
+<body>
+
+<!-- 奥：テキストボックスの後ろのレイヤー。大きな演出はここでやる -->
+<div id="back">
+  <div id="bg"></div>          <!-- 背景（作品の CSS で見た目を決める） -->
+  <div id="fxLayer"></div>     <!-- 作品の演出用（effects.js から自由に使う） -->
+  <div id="dimmer"></div>
+</div>
+
+<!-- 枠：画面の縁。文字は入れない -->
+<div id="frame"><i class="cn tl"></i><i class="cn tr"></i><i class="cn bl"></i><i class="cn br"></i></div>
+
+<!-- 本文（この中身は演出で揺らさない） -->
+<div id="game" hidden>
+  <div id="chapLabel"></div>
+  <div id="box" aria-live="polite"><div id="lines"></div><div id="cursor">▼</div></div>
+  <div id="choices" hidden></div>
+  <div id="menu">
+    <button data-act="skip" id="btnSkip" title="Sキー">スキップ</button>
+    <button data-act="log">ログ</button>
+    <button data-act="save">セーブ</button>
+    <button data-act="load">ロード</button>
+    <button data-act="qload">直前の選択肢</button>
+    <button data-act="records" class="needRecords" hidden>記録</button>
+    <button data-act="config">設定</button>
+    <button data-act="title">タイトル</button>
+  </div>
+  <div id="card" hidden><div id="cardNo"></div><div id="cardName"></div></div>
+</div>
+
+<!-- タイトル -->
+<div id="titleScr" class="scr">
+  <h1 id="titleMain"></h1>
+  <div class="sub" id="titleSub"></div>
+  <nav>
+    <button data-act="new">はじめから</button>
+    <button data-act="load">ロード</button>
+    <button data-act="qload" id="tQload">直前の選択肢から</button>
+    <button data-act="gallery">エンディング一覧</button>
+    <button data-act="records" class="needRecords" hidden>記録</button>
+    <button data-act="config">設定</button>
+  </nav>
+</div>
+
+<!-- 名前入力 -->
+<div id="nameScr" class="scr" hidden>
+  <p id="namePrompt"></p>
+  <input id="nameIn" autocomplete="off">
+  <div class="row"><button id="nameOk">決定</button><button id="nameBack">戻る</button></div>
+</div>
+
+<!-- パネル（セーブ／ロード／一覧／設定／ログ／記録） -->
+<div id="panel" class="panel" hidden>
+  <div class="phead"><span id="ptitle"></span><button id="pclose">閉じる</button></div>
+  <div id="pbody"></div>
+</div>
+
+<div id="endScr" class="scr" hidden><div id="endMark"></div><div id="endSub"></div><button id="endOk">タイトルへ</button></div>
+
+<div id="toast" hidden></div>
+<div id="dbg" hidden></div>
+<div id="fatal" hidden></div>
+
+<!-- 読み込み順：設定 → エンジン → 起動（シナリオ・演出・画面は起動が順に読み込む） -->
+<script src="game/config.js"></script>
+<script src="engine/core.js"></script>
+<script src="engine/loader.js"></script>
+</body>
+</html>

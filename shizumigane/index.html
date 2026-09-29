@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<title>しずみがね</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div id="app">
+
+  <section id="tt" class="scr">
+    <div class="tt-in">
+      <p class="tt-sub">平成十八年　八月</p>
+      <h1 class="tt-h">しずみがね</h1>
+      <nav class="tt-nav">
+        <button type="button" data-a="new">はじめから</button>
+        <button type="button" data-a="cont" id="b-cont">つづきから</button>
+        <button type="button" data-a="rec">回収一覧</button>
+        <button type="button" data-a="cfg">設定</button>
+        <button type="button" data-a="snd">音　<span id="snd-v">OFF</span></button>
+      </nav>
+    </div>
+  </section>
+
+  <section id="nx" class="scr" hidden>
+    <form class="nx-in" id="nx-f" autocomplete="off">
+      <p class="nx-h">調査隊名簿</p>
+      <div class="nx-row">
+        <span class="nx-no">1</span>
+        <label class="nx-lb" for="nx-i">氏名</label>
+        <input id="nx-i" type="text" maxlength="8" spellcheck="false" enterkeyhint="done">
+      </div>
+      <p class="nx-note">空欄のときは「<span id="nx-d"></span>」になります</p>
+      <div class="nx-btns">
+        <button type="button" data-a="title">戻る</button>
+        <button type="submit">記入する</button>
+      </div>
+    </form>
+  </section>
+
+  <section id="pl" class="scr" hidden>
+    <header id="hd">
+      <div id="plate" class="plate"></div>
+      <div class="hd-b">
+        <button type="button" data-a="log">ログ</button>
+        <button type="button" data-a="skip" id="b-skip" aria-pressed="false">スキップ</button>
+        <button type="button" data-a="menu">メニュー</button>
+      </div>
+    </header>
+    <aside id="rw">
+      <p class="rw-h">出席簿</p>
+      <ol id="rs"></ol>
+    </aside>
+    <main id="mn">
+      <div id="tx"></div>
+      <div id="op" hidden></div>
+      <div id="cue" aria-hidden="true"></div>
+    </main>
+  </section>
+
+  <div id="lv" aria-hidden="true"></div>
+
+  <div id="cd" hidden>
+    <div class="cd-in">
+      <p id="cd-l"></p>
+      <div class="plate plate-l"><span id="cd-t"></span></div>
+    </div>
+  </div>
+
+  <div id="ov" hidden></div>
+  <div id="pn" hidden><div class="pn-in" role="dialog" aria-modal="true"></div></div>
+</div>
+
+<script src="js/core.js"></script>
+<script src="js/scenario/meta.js"></script>
+<script src="js/scenario/ch01.js"></script>
+<script src="js/scenario/ch02.js"></script>
+<script src="js/scenario/ch03.js"></script>
+<script src="js/scenario/ch04.js"></script>
+<script src="js/scenario/ch05.js"></script>
+<script src="js/scenario/ch06.js"></script>
+<script src="js/scenario/ch07.js"></script>
+<script src="js/scenario/ch08.js"></script>
+<script src="js/scenario/ch09.js"></script>
+<script src="js/scenario/ch10.js"></script>
+<script src="js/audio.js"></script>
+<script src="js/engine.js"></script>
+</body>
+</html>

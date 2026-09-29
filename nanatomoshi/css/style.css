@@ -1,0 +1,440 @@
+:root {
+  --bg: #0c0b0a;
+  --bg2: #15130f;
+  --ink: #ebe5d8;
+  --ink-dim: #a39b8b;
+  --pc: #d9c9a3;
+  --bone-hi: #f6f0e2;
+  --bone: #d8ceb8;
+  --bone-lo: #a89b80;
+  --blood: #b8121e;
+  --voice: #f3dcc6;
+  --fs: 17px;
+  --serif: "Noto Serif JP", "Yu Mincho", "YuMincho", "Hiragino Mincho ProN", "HGS明朝E", "MS PMincho", serif;
+  --soft: "Hiragino Maru Gothic ProN", "Yu Gothic", "YuGothic", "Meiryo", sans-serif;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; }
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--serif);
+  font-size: var(--fs);
+  overflow: hidden;
+  transition: background-color 2s;
+  -webkit-tap-highlight-color: transparent;
+}
+body.night { background: #060607; }
+[hidden] { display: none !important; }
+button {
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+
+#app { position: fixed; inset: 0; }
+
+/* ================= 遊技画面 ================= */
+#stage {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 8px 12px calc(8px + env(safe-area-inset-bottom));
+  transform-origin: 50% 100%;
+}
+#stage.dark { animation: dark 2.4s ease-in-out; }
+@keyframes dark { 0% { opacity: 1; } 40%, 60% { opacity: 0; } 100% { opacity: 1; } }
+
+/* ---- 蝋燭 ---- */
+#candles, .t-candles {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: clamp(14px, 4vw, 30px);
+  height: 72px;
+  flex: none;
+  padding-bottom: 4px;
+  padding-top: 8px;
+}
+.cd { position: relative; width: 12px; height: 60px; }
+.cd .wax {
+  position: absolute; bottom: 0; left: 1px; width: 10px; height: 34px;
+  background: linear-gradient(90deg, #cfc6b0, #faf6ec 45%, #d9d0bb);
+  border-radius: 2px 2px 1px 1px;
+  box-shadow: 0 0 6px rgba(0,0,0,.6);
+}
+.cd .wax::before {
+  content: ""; position: absolute; top: -2px; left: 2px; width: 3px; height: 7px;
+  background: #efe8d6; border-radius: 0 0 2px 2px;
+}
+.cd .wick {
+  position: absolute; bottom: 34px; left: 5.5px; width: 1px; height: 5px; background: #2a241c;
+}
+.cd .flame {
+  position: absolute; bottom: 37px; left: -1px; width: 14px; height: 22px;
+  border-radius: 50% 50% 45% 45% / 62% 62% 38% 38%;
+  background: radial-gradient(ellipse at 50% 72%, #fffbe8 0%, #ffe39a 28%, #f7a73c 58%, rgba(230,90,20,.0) 76%);
+  transform-origin: 50% 90%;
+  animation: flicker 2.8s infinite ease-in-out;
+  transition: opacity .8s, transform .8s;
+}
+.cd .glow {
+  position: absolute; bottom: 24px; left: -18px; width: 48px; height: 48px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,200,120,.22), rgba(255,160,80,0) 70%);
+  transition: opacity .8s;
+  pointer-events: none;
+}
+.cd:nth-child(2n) .flame { animation-duration: 3.3s; animation-delay: -.7s; }
+.cd:nth-child(3n) .flame { animation-duration: 2.3s; animation-delay: -1.3s; }
+@keyframes flicker {
+  0%, 100% { transform: scale(1, 1) rotate(0deg); }
+  20% { transform: scale(.96, 1.05) rotate(-2deg); }
+  45% { transform: scale(1.03, .95) rotate(1.5deg); }
+  70% { transform: scale(.98, 1.03) rotate(-1deg); }
+}
+.cd.off .flame { opacity: 0; transform: scale(.2, .1); animation: none; }
+.cd.off .glow { opacity: 0; }
+.cd.lighting .flame { animation: light 1.4s ease-out, flicker 2.8s 1.4s infinite ease-in-out; }
+@keyframes light { 0% { opacity: 0; transform: scale(.1, .1); } 60% { opacity: 1; transform: scale(1.2, 1.3); } 100% { transform: scale(1, 1); } }
+.cd .smoke {
+  position: absolute; bottom: 38px; left: 3px; width: 6px; height: 6px; border-radius: 50%;
+  background: rgba(200,200,200,.5); opacity: 0; pointer-events: none;
+}
+.cd.smoking .smoke { animation: smoke 2.6s ease-out; }
+@keyframes smoke {
+  0% { opacity: .7; transform: translate(0, 0) scale(1); }
+  100% { opacity: 0; transform: translate(6px, -46px) scale(5); }
+}
+.cd.snuffed .flame { animation: snuff .5s ease-in forwards; }
+@keyframes snuff {
+  0% { opacity: 1; transform: scale(1, 1); filter: hue-rotate(0); }
+  50% { opacity: 1; transform: scale(.4, 1.6); filter: hue-rotate(-40deg) saturate(3); }
+  100% { opacity: 0; transform: scale(.05, .2); }
+}
+
+/* ---- 骨の枠 ---- */
+#frame {
+  position: relative;
+  flex: 1 1 auto;
+  width: 100%;
+  max-width: 820px;
+  min-height: 0;
+  padding: 22px 22px 22px;
+  transform-origin: 50% 100%;
+}
+#frame .row {
+  position: absolute; left: 10px; right: 10px; height: 16px;
+  display: flex; align-items: center; gap: 7px;
+}
+#frame .row.top { top: 2px; }
+#frame .row.bottom { bottom: 2px; }
+#frame .row::before {
+  content: ""; position: absolute; left: -6px; right: -6px; top: 6px; height: 4px; border-radius: 2px;
+  background: linear-gradient(var(--bone), var(--bone-lo));
+  opacity: .3;
+}
+.bone {
+  position: relative;
+  flex: 1 1 0;
+  min-width: 0;
+  height: 13px;
+  border-radius: 7px / 6px;
+  background: linear-gradient(180deg, var(--bone-hi) 0%, var(--bone) 55%, var(--bone-lo) 100%);
+  box-shadow: 0 1px 2px rgba(0,0,0,.7), inset 0 -1px 1px rgba(0,0,0,.2);
+  overflow: visible;
+  transition: height .8s, box-shadow 1.5s;
+}
+.bone::before, .bone::after {
+  content: ""; position: absolute; top: 50%; width: 9px; height: 15px; margin-top: -7.5px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 35%, var(--bone-hi), var(--bone-lo));
+}
+.bone::before { left: -3px; }
+.bone::after { right: -3px; }
+.row.top .bone i {
+  position: absolute; left: 50%; top: -6px; width: 4px; height: 7px; margin-left: -2px;
+  background: linear-gradient(var(--bone-hi), var(--bone)); border-radius: 2px 2px 0 0;
+}
+.row.bottom .bone i {
+  position: absolute; left: 50%; bottom: -6px; width: 4px; height: 7px; margin-left: -2px;
+  background: linear-gradient(var(--bone), var(--bone-lo)); border-radius: 0 0 2px 2px;
+}
+.bone .nm {
+  position: absolute; left: 4px; right: 4px; top: 0; bottom: 0;
+  font-size: 8px; line-height: 12px; letter-spacing: -.02em;
+  color: #5b4d39; text-align: center; white-space: nowrap; overflow: hidden;
+  font-family: var(--serif);
+  opacity: 0; transition: opacity 2.5s;
+  z-index: 1;
+}
+#frame.named .bone { height: 14px; }
+#frame.named .bone .nm { opacity: .92; line-height: 14px; }
+.bone.fresh { background: linear-gradient(180deg, #ffffff, #f4efe5 60%, #ddd4c2); box-shadow: 0 0 8px rgba(255,255,255,.35); }
+.bone.blank .nm { opacity: 0 !important; }
+.bone.grow { animation: grow 2.2s ease-out; }
+@keyframes grow {
+  0% { flex-grow: .001; opacity: 0; filter: brightness(2.2); }
+  50% { opacity: 1; filter: brightness(1.8); }
+  100% { flex-grow: 1; filter: brightness(1); }
+}
+.bone.gold { animation: goldlit 3s ease-in-out; }
+@keyframes goldlit {
+  0% { filter: none; }
+  35%, 55% { background: linear-gradient(180deg, #fff6cc, #f1c75a 55%, #b8862a); box-shadow: 0 0 14px 4px rgba(255,200,90,.75); }
+  100% { filter: none; }
+}
+#frame .side {
+  position: absolute; top: 14px; bottom: 14px; width: 12px;
+  background:
+    repeating-linear-gradient(180deg, transparent 0 26px, rgba(0,0,0,.35) 26px 28px),
+    linear-gradient(90deg, var(--bone-lo), var(--bone-hi) 45%, var(--bone) 70%, var(--bone-lo));
+  border-radius: 6px;
+  box-shadow: 0 0 3px rgba(0,0,0,.8);
+  opacity: .9;
+}
+#frame .side.left { left: 2px; }
+#frame .side.right { right: 2px; }
+#frame .side::before, #frame .side::after {
+  content: ""; position: absolute; left: -3px; width: 18px; height: 18px; border-radius: 50%;
+  background: radial-gradient(circle at 40% 35%, var(--bone-hi), var(--bone-lo));
+}
+#frame .side::before { top: -9px; }
+#frame .side::after { bottom: -9px; }
+
+/* ---- 本文窓 ---- */
+#win {
+  position: relative;
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 18px clamp(14px, 4vw, 34px) 36px;
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(255,240,210,.035), transparent 60%),
+    rgba(10,9,8,.86);
+  outline: none;
+  cursor: pointer;
+  scrollbar-width: thin;
+  scrollbar-color: #3a342b transparent;
+}
+#text p.ln {
+  margin: 0 0 .55em;
+  line-height: 1.95;
+  white-space: pre-wrap;
+  word-break: break-word;
+  letter-spacing: .03em;
+}
+#text p.ln.pc { color: var(--pc); padding-left: .2em; }
+#text p.ln.voice {
+  font-family: var(--soft);
+  font-weight: 300;
+  color: var(--voice);
+  margin-top: -.55em;
+  padding-left: 2.2em;
+  letter-spacing: .14em;
+  text-shadow: 0 0 10px rgba(255,214,180,.55);
+  opacity: .88;
+  animation: voicein 2.2s ease-out;
+}
+@keyframes voicein { from { opacity: 0; filter: blur(3px); } to { opacity: .88; filter: blur(0); } }
+#text .seal { transition: color 1.4s ease-in, text-shadow 1.4s ease-in, filter 1.4s ease-in; display: inline; }
+#text .seal.on {
+  color: var(--blood);
+  filter: blur(.7px);
+  text-shadow: 0 0 5px rgba(210,10,20,.85), 1px 2px 4px rgba(120,0,0,.9), -1px 3px 7px rgba(90,0,0,.7);
+  animation: bleed 3.2s ease-in-out infinite;
+}
+@keyframes bleed {
+  0%, 100% { filter: blur(.6px); }
+  50% { filter: blur(1.4px); }
+}
+#cursor {
+  position: sticky; bottom: 0; float: right; margin-top: -1.2em;
+  font-size: 12px; color: var(--ink-dim);
+  animation: blink 1.2s infinite;
+  opacity: 0;
+}
+#win.ready #cursor { opacity: 1; }
+@keyframes blink { 50% { opacity: .2; } }
+
+#choices { display: flex; flex-direction: column; gap: 10px; margin-top: 14px; }
+#choices button {
+  text-align: left;
+  padding: 11px 14px;
+  line-height: 1.7;
+  background: rgba(40,35,28,.55);
+  border: 1px solid rgba(216,206,184,.35);
+  border-left: 3px solid var(--bone);
+  color: var(--pc);
+  border-radius: 2px;
+  transition: background .25s, border-color .25s, transform .2s;
+  animation: choicein .6s ease-out both;
+}
+#choices button:nth-child(2) { animation-delay: .12s; }
+#choices button:nth-child(3) { animation-delay: .24s; }
+@keyframes choicein { from { opacity: 0; transform: translateY(6px); } }
+#choices button:hover, #choices button:focus-visible {
+  background: rgba(80,68,50,.6);
+  border-color: var(--bone-hi);
+  outline: none;
+}
+
+/* ---- 下部メニュー ---- */
+#bar {
+  flex: none;
+  display: flex; flex-wrap: wrap; justify-content: center; gap: 6px;
+  padding-top: 8px;
+  max-width: 820px; width: 100%;
+}
+#bar button, .t-menu button, .m-box button {
+  background: rgba(30,27,22,.8);
+  border: 1px solid rgba(216,206,184,.28);
+  border-radius: 2px;
+  padding: 5px 12px;
+  font-size: 13px;
+  color: var(--ink-dim);
+  transition: color .2s, border-color .2s;
+}
+#bar button:hover, .t-menu button:hover, .m-box button:hover { color: var(--ink); border-color: var(--bone); }
+button:disabled { opacity: .35; cursor: default; }
+
+/* ---- 軋み・揺れ ---- */
+/* 揺れるのは骨の枠と蝋燭だけ。本文窓は動かさない */
+#bones { position: absolute; inset: 0; pointer-events: none; transform-origin: 50% 100%; }
+#bones.creak { animation: creak 1.9s ease-in-out; }
+@keyframes creak {
+  0% { transform: rotate(0); }
+  30% { transform: rotate(.7deg) translateX(2px); }
+  55% { transform: rotate(-.25deg); }
+  80% { transform: rotate(.1deg); }
+  100% { transform: rotate(0); }
+}
+#bones.shake, #candles.shake { animation: shake .6s linear; }
+@keyframes shake {
+  0%, 100% { transform: translate(0, 0); }
+  10% { transform: translate(-6px, 2px); } 20% { transform: translate(5px, -3px); }
+  30% { transform: translate(-4px, 3px); } 40% { transform: translate(6px, 1px); }
+  50% { transform: translate(-3px, -2px); } 60% { transform: translate(4px, 2px); }
+  70% { transform: translate(-2px, 1px); } 80% { transform: translate(2px, -1px); }
+}
+#bones.quake, #candles.quake { animation: shake .45s linear 5; }
+
+#flash {
+  position: fixed; inset: 0; pointer-events: none; opacity: 0; background: #fff; z-index: 30;
+}
+#flash.on { animation: flash 1.6s ease-out; }
+@keyframes flash { 0% { opacity: 0; } 8% { opacity: .92; } 100% { opacity: 0; } }
+#vignette {
+  position: fixed; inset: 0; pointer-events: none; opacity: 0; z-index: 29;
+  background: radial-gradient(ellipse at center, transparent 45%, rgba(140,0,10,.55) 100%);
+}
+#vignette.on { animation: vig 2.6s ease-in-out; }
+@keyframes vig { 0% { opacity: 0; } 25% { opacity: 1; } 100% { opacity: 0; } }
+
+/* ================= タイトル ================= */
+#title {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 18px;
+  background: radial-gradient(ellipse at 50% 30%, #1b1812, var(--bg) 70%);
+}
+#title h1 {
+  margin: 8px 0 18px;
+  font-weight: 400;
+  font-size: clamp(34px, 9vw, 60px);
+  letter-spacing: .5em;
+  padding-left: .5em;
+  color: var(--bone-hi);
+  text-shadow: 0 0 18px rgba(255,220,160,.25);
+}
+.t-menu { display: flex; flex-direction: column; gap: 10px; min-width: 220px; }
+.t-menu button { padding: 10px 18px; font-size: 16px; letter-spacing: .2em; }
+
+/* ================= 札 ================= */
+#card {
+  position: fixed; inset: 0; z-index: 40;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(0,0,0,.9);
+  animation: cardin 1.2s ease-out;
+  cursor: pointer;
+}
+#card .c-inner {
+  text-align: center; font-size: clamp(20px, 5vw, 28px); letter-spacing: .35em; line-height: 2.2;
+  color: var(--bone-hi); padding: 0 16px;
+}
+#card .c-inner small { display: block; font-size: 13px; letter-spacing: .5em; color: var(--ink-dim); }
+@keyframes cardin { from { opacity: 0; } }
+
+/* ================= ダイアログ ================= */
+#modal {
+  position: fixed; inset: 0; z-index: 50;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(0,0,0,.7);
+  padding: 12px;
+}
+.m-box {
+  width: 100%; max-width: 600px; max-height: 88vh; overflow-y: auto;
+  background: var(--bg2);
+  border: 1px solid rgba(216,206,184,.3);
+  padding: 18px 16px;
+  font-size: 15px;
+}
+.m-box h2 { font-size: 17px; font-weight: 400; letter-spacing: .2em; margin: 0 0 12px; color: var(--bone-hi); }
+.m-box p { line-height: 1.8; margin: .4em 0; }
+.m-box .foot { display: flex; justify-content: flex-end; gap: 8px; margin-top: 14px; }
+.m-box input[type=text] {
+  width: 100%; font: inherit; font-size: 18px; padding: 8px 10px;
+  background: #0b0a09; color: var(--ink); border: 1px solid var(--bone-lo);
+}
+.m-box input[type=range] { width: 100%; }
+.slot {
+  display: grid; grid-template-columns: 2.4em 1fr; gap: 2px 10px;
+  width: 100%; text-align: left;
+  padding: 8px 10px !important; margin-bottom: 6px;
+  font-size: 13px !important;
+}
+.slot .no { grid-row: 1 / 3; align-self: center; color: var(--bone); font-size: 14px; }
+.slot .meta { color: var(--ink-dim); }
+.slot .head { color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.slot.auto { border-left: 3px solid var(--bone) !important; }
+.slot.empty .head { color: #5a544a; }
+.ed-item { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 8px 4px; border-bottom: 1px solid rgba(216,206,184,.12); }
+.ed-item .nm { letter-spacing: .15em; }
+.ed-item .nm.locked { color: #6a6358; }
+.cfg-row { margin: 10px 0 16px; }
+.cfg-row label { display: block; margin-bottom: 6px; color: var(--ink-dim); font-size: 13px; }
+
+/* ================= デバッグ ================= */
+#debug {
+  position: fixed; top: 6px; right: 6px; z-index: 60;
+  background: rgba(20,40,20,.92); color: #cfe; font: 12px/1.5 monospace;
+  padding: 6px 8px; border: 1px solid #4a6; max-width: 250px;
+}
+#debug select, #debug button { font: 11px monospace; margin: 2px 2px 0 0; }
+#debug .row { margin-top: 4px; }
+
+/* ================= 小画面 ================= */
+@media (max-width: 600px) {
+  :root { --fs: 15.5px; }
+  #stage { padding: 4px 4px calc(6px + env(safe-area-inset-bottom)); }
+  #candles { height: 64px; gap: 16px; }
+  .cd { transform: scale(.85); transform-origin: 50% 100%; }
+  #frame { padding: 18px 16px; }
+  #frame .row { left: 6px; right: 6px; gap: 5px; }
+  .bone { height: 11px; }
+  .bone::before, .bone::after { width: 7px; height: 13px; margin-top: -6.5px; }
+  .bone .nm { font-size: 6.5px; line-height: 11px; left: 1px; right: 1px; }
+  #frame.named .bone { height: 12px; }
+  #frame.named .bone .nm { line-height: 12px; }
+  .bone.gold { animation: goldlit 3s ease-in-out; }
+@keyframes goldlit {
+  0% { filter: none; }
+  35%, 55% { background: linear-gradient(180deg, #fff6cc, #f1c75a 55%, #b8862a); box-shadow: 0 0 14px 4px rgba(255,200,90,.75); }
+  100% { filter: none; }
+}
+#frame .side { width: 9px; }
+  #win { padding: 12px 12px 30px; }
+  #bar button { padding: 4px 8px; font-size: 12px; }
+}

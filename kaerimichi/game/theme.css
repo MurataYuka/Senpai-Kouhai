@@ -1,0 +1,121 @@
+/* 見た目：褪せた生成り色と墨色。アクセントは聖銀の淡い灰青。
+   #box と #lines には揺れ・傾き・移動・明滅を付けない。 */
+
+:root {
+  --bg: #d8cfbd;
+  --paper: #e6dfcf;
+  --ink: #2b2825;
+  --ink-dim: #6e675d;
+  --accent: #6f8392;
+  --accent-dim: #97a3ab;
+  --edge: #b2a893;
+  --box-bg: rgba(238, 232, 219, .93);
+  --box-line: rgba(90, 104, 116, .32);
+  --self: #33485a;
+  --panel-bg: rgba(236, 230, 216, .985);
+  --btn-bg: rgba(236, 230, 216, .95);
+  --road: #3a3530;
+  --horn: #1d1b1a;
+  color-scheme: light;
+}
+
+/* 第十宿駅から先、アクセントが角の黒へ寄っていく */
+body[data-v-v1="10"] { --accent: #5d6670; --accent-dim: #8a8f94; --self: #2f3c48; }
+body[data-v-v1="11"] { --accent: #4c4f55; --accent-dim: #7f8084; --self: #2a3139; }
+body[data-v-v1="12"] { --accent: #38363a; --accent-dim: #747174; --self: #25272b; }
+
+body { background: var(--bg); }
+#bg {
+  background:
+    radial-gradient(ellipse at 50% 38%, rgba(246, 241, 230, .75) 0%, rgba(246, 241, 230, 0) 62%),
+    radial-gradient(ellipse at 50% 120%, rgba(60, 50, 40, .22) 0%, rgba(60, 50, 40, 0) 60%),
+    var(--bg);
+}
+#dimmer { background: #1d1a18; }
+body[data-v-dim="on"] #dimmer { opacity: .34; }
+
+#frame { border-color: var(--edge); }
+
+/* 本文まわり（色だけ。動かさない） */
+#box { box-shadow: 0 1px 0 rgba(255, 255, 255, .4) inset, 0 6px 22px rgba(60, 50, 40, .12); }
+#cursor { color: var(--accent); }
+#chapLabel { color: var(--ink-dim); }
+#choices button { background: var(--btn-bg); color: var(--ink); box-shadow: 0 3px 12px rgba(60, 50, 40, .12); }
+#choices button:hover, #choices button:focus-visible { border-color: var(--accent); background: #f1ece0; }
+#menu button { color: var(--ink-dim); }
+#menu button:hover { color: var(--ink); }
+#cardNo { color: var(--accent); }
+#cardName { color: var(--ink); }
+
+.panel { background: var(--panel-bg); color: var(--ink); box-shadow: 0 10px 40px rgba(40, 32, 24, .25); }
+#nameScr input { background: #f3eee2; color: var(--ink); }
+#endScr { background: rgba(216, 207, 189, .72); }
+#endSub { color: var(--ink-dim); }
+#toast { background: rgba(240, 235, 223, .97); color: var(--ink); }
+#titleScr h1 { color: var(--ink); }
+#titleScr .sub { color: var(--accent); }
+#titleScr nav button, #nameScr button, #endScr button { background: rgba(240, 235, 223, .6); }
+
+/* ---------- 道（#fxLayer の svg） ---------- */
+#way { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+#way path, #way circle { vector-effect: non-scaling-stroke; }
+#way .line { fill: none; stroke: var(--road); stroke-width: 1.2; opacity: .62; }
+#way .mark { fill: var(--road); opacity: .7; }
+#way .mark .gate { fill: var(--bg); }
+#way .tick { stroke: var(--road); stroke-width: 1; opacity: 0; transition: opacity 1.6s; }
+#way .tick.on { opacity: .55; }
+#way .dot { fill: var(--accent); stroke: var(--paper); stroke-width: 1.4; }
+#way .dot.travel { transition: transform 26s linear; }
+#way .loopline { fill: none; stroke: var(--road); stroke-width: 1; stroke-dasharray: 2 6; opacity: .16; transition: opacity 3s; }
+#way .loopline.deep { opacity: .42; stroke-dasharray: 3 5; }
+#way .road { transition: opacity 3.5s; }
+#way .road.fading { opacity: 0; }
+#way .road.gone { opacity: 0; transition: none; }
+#way .road.rise { animation: kmRise 3s ease-out 1; }
+@keyframes kmRise { from { opacity: 0; } }
+
+#way .horn { fill: none; stroke: var(--horn); stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; opacity: .72; }
+#way .horns { transform-box: view-box; transition: transform 4.5s ease-in-out, opacity 2.6s; }
+#way .horns .horn { transition: stroke-width 4.5s, opacity 4.5s; }
+#way .horns.crown { transform: scale(1.55); transform-origin: 50% 94%; }
+#way .horns.crown .horn { stroke-width: 7; opacity: .95; filter: drop-shadow(0 0 5px rgba(0, 0, 0, .35)); }
+#way .horns.closing { opacity: 0; transform: scale(.82); transform-origin: 50% 50%; }
+#way .horns.fadeout { opacity: 0; }
+#way .horns.broken { opacity: 0; transition: opacity .5s; }
+#way .horn.ash { transition: opacity 3.2s, filter 3.2s, transform 3.2s; opacity: 0; filter: blur(3px); transform: translateY(18px); stroke: #8b8479; }
+#way .stray { fill: none; stroke: var(--road); stroke-width: 1; stroke-dasharray: 1 5; stroke-linecap: round; opacity: .5; }
+#way.vignette { filter: none; }
+body[data-v-v3="stray"] #bg { box-shadow: inset 0 0 180px 60px rgba(40, 32, 26, .45); transition: box-shadow 6s; }
+
+#fxLayer .bit { position: absolute; display: block; pointer-events: none; }
+#fxLayer .bit.ash { width: 3px; height: 3px; border-radius: 50%; background: #8b8479; transition: transform 2.8s ease-in, opacity 2.8s ease-in; }
+#fxLayer .bit.shard { width: 10px; height: 2px; background: var(--horn); transition: transform 2.2s cubic-bezier(.15, .7, .3, 1), opacity 2.4s ease-in, background 1s, box-shadow 1s; }
+#fxLayer .bit.shard.lit { background: #fff8e6; box-shadow: 0 0 10px 3px rgba(255, 244, 214, .9); }
+
+/* 夜（明けない夜）：画面全体が夜の色になり、線は星の列になる */
+body[data-v-v3="night"] {
+  --bg: #0d1020; --paper: #141a30; --ink: #e3dfd2; --ink-dim: #9396a3; --accent: #b9c3d9; --accent-dim: #626a82;
+  --edge: #2a3050; --box-bg: rgba(14, 18, 36, .9); --box-line: rgba(160, 172, 205, .28); --self: #cfd8ee;
+  --panel-bg: rgba(14, 17, 32, .985); --btn-bg: rgba(18, 22, 42, .95); --road: #c9cfdf;
+  color-scheme: dark;
+}
+body[data-v-v3="night"] #bg { background: radial-gradient(ellipse at 50% 30%, #1a2040 0%, #0d1020 70%); transition: background 5s; }
+body[data-v-v3="night"] #choices button:hover { background: #1b2140; }
+body[data-v-v3="night"] #endScr { background: rgba(8, 10, 22, .6); }
+#way .stars circle { fill: #f4efdc; animation: kmTwinkle 5s ease-in-out infinite; }
+#way .stars.slow { animation: kmRise 6s ease-out 1; }
+@keyframes kmTwinkle { 0%, 100% { opacity: .9; } 50% { opacity: .25; } }
+
+@media (prefers-reduced-motion: reduce) {
+  #way .stars circle { animation: none; }
+}
+
+/* 暗転（@vis dim deep）：奥だけを深く暗くする。本文は動かさない */
+body[data-v-dim="deep"] #dimmer { opacity: .9; transition: opacity 1.2s; }
+
+/* デバッグ欄（?debug=1）は暗い地のまま文字を明るく */
+#dbg { color: #ddd; }
+
+/* 下辺の線（街道）がテキストボックスとメニューのあいだに収まるよう、ボックスを少し上げる */
+:root { --box-bottom: 62px; }
+@media (max-width: 560px) { :root { --box-bottom: 90px; } }  /* メニューが二段になるぶん */

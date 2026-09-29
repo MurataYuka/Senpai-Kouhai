@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ななともし</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div id="app">
+
+  <!-- 遊技画面 -->
+  <div id="stage" hidden>
+    <div id="candles" aria-hidden="true"></div>
+    <div id="frame">
+      <div id="bones" aria-hidden="true">
+        <div class="row top" id="spine"></div>
+        <div class="side left"></div>
+        <div class="side right"></div>
+        <div class="row bottom" id="base"></div>
+      </div>
+      <div id="win" tabindex="0">
+        <div id="text" aria-live="polite"></div>
+        <div id="choices"></div>
+        <div id="cursor" aria-hidden="true">▼</div>
+      </div>
+    </div>
+    <nav id="bar">
+      <button data-act="save">セーブ</button>
+      <button data-act="load">ロード</button>
+      <button data-act="back">直前の選択肢に戻る</button>
+      <button data-act="config">設定</button>
+      <button data-act="title">タイトル</button>
+    </nav>
+  </div>
+
+  <!-- タイトル -->
+  <div id="title" hidden>
+    <div class="t-candles" aria-hidden="true"></div>
+    <h1>ななともし</h1>
+    <div class="t-menu">
+      <button data-act="new">はじめから</button>
+      <button data-act="continue">続きから</button>
+      <button data-act="gallery">エンディング</button>
+      <button data-act="config">設定</button>
+    </div>
+  </div>
+
+  <!-- 章題・終幕の札 -->
+  <div id="card" hidden><div class="c-inner"></div></div>
+
+  <!-- 画面効果 -->
+  <div id="flash" aria-hidden="true"></div>
+  <div id="vignette" aria-hidden="true"></div>
+
+  <!-- 汎用ダイアログ -->
+  <div id="modal" hidden><div class="m-box" role="dialog"></div></div>
+
+  <!-- デバッグ（?debug=1 のときだけ表示） -->
+  <div id="debug" hidden></div>
+</div>
+
+<script src="js/core.js"></script>
+<script src="data/ch01.js"></script>
+<script src="data/ch02.js"></script>
+<script src="data/ch03.js"></script>
+<script src="data/ch04.js"></script>
+<script src="data/ch05.js"></script>
+<script src="data/ch06.js"></script>
+<script src="data/ch07.js"></script>
+<script src="data/ch08.js"></script>
+<script src="data/ch09.js"></script>
+<script src="data/ch10.js"></script>
+<script src="data/ch11.js"></script>
+<script src="data/ch12.js"></script>
+<script src="data/ed1.js"></script>
+<script src="data/ed2.js"></script>
+<script src="data/ed3.js"></script>
+<script src="data/ed4.js"></script>
+<script src="data/ed5.js"></script>
+<script src="data/ed6.js"></script>
+<script src="data/ed7.js"></script>
+<script src="js/ui.js"></script>
+</body>
+</html>

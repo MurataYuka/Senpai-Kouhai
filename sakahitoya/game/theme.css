@@ -1,0 +1,96 @@
+/* 作品の見た目。名前はすべて記号（対応表は docs/secret/notes.md）。
+   #box と #lines には揺れ・傾き・移動・明滅を付けない。動かすのは #back の中と #frame だけ。 */
+
+:root {
+  --bg: #07080c;
+  --ink: #e4e1da;
+  --ink-dim: #948f86;
+  --accent: #c9a36b;
+  --accent-dim: #6f5c40;
+  --edge: #2a2a30;
+  --box-bg: rgba(8, 9, 13, .9);
+  --box-line: rgba(201, 163, 107, .24);
+  --self: #f3e7cf;
+  --lamp: #f0b45e;
+  --line: rgba(170, 176, 196, .42);
+}
+
+/* ---------- 背景 ---------- */
+#bg {
+  background: linear-gradient(to bottom, #0c0e15 0%, #07080c 45%, #07080c 60%, #130e08 100%);
+  transition: background 2s, filter 2s, transform 9s cubic-bezier(.45, 0, .25, 1);
+}
+
+/* 舞台（屋根並み）：テキストボックスより上の領域に置く */
+.k0 {
+  position: absolute;
+  left: 8px; right: 8px; top: 8px;
+  bottom: calc(var(--box-bottom) + var(--box-h) + 6px);
+  transform-origin: 50% 50%;
+  transition: transform 9s cubic-bezier(.45, 0, .25, 1), opacity 4s;
+}
+.k0 svg { width: 100%; height: 100%; display: block; overflow: visible; }
+.k-ln { fill: none; stroke: var(--line); stroke-width: 1; vector-effect: non-scaling-stroke; stroke-linejoin: round; }
+.k-ax { stroke: rgba(170, 176, 196, .22); stroke-width: 1; vector-effect: non-scaling-stroke; }
+.k-rk { stroke: rgba(170, 176, 196, .09); stroke-width: 1; vector-effect: non-scaling-stroke; }
+.k-ck { fill: none; stroke: rgba(230, 210, 180, .7); stroke-width: 1.2; vector-effect: non-scaling-stroke;
+  stroke-dasharray: 1400; stroke-dashoffset: 1400; transition: stroke-dashoffset 5s ease-out; }
+.k-w { fill: rgba(240, 180, 94, 0); stroke: rgba(170, 176, 196, .25); stroke-width: 1; vector-effect: non-scaling-stroke;
+  transition: fill 1.6s, filter 1.6s, stroke 1.6s; }
+.k-w.on { fill: var(--lamp); stroke: rgba(240, 180, 94, .9); filter: drop-shadow(0 0 4px rgba(240, 180, 94, .9)); }
+.k1 { transition: opacity 5s; }
+.k1 .k-ln { transition: stroke-dasharray 4s, opacity 4s; }
+
+/* 空（夜明け） */
+.k3 { position: absolute; inset: 0; opacity: 0; transition: opacity 8s;
+  background: linear-gradient(to bottom, #2a3a5c 0%, #7a6a78 26%, #d9a07a 44%, rgba(12, 14, 21, 0) 70%); }
+
+/* v2：反転（背景と舞台が百八十度回る） */
+body[data-v-v2="on"] .k0, body[data-v-v2="on"] #bg { transform: rotate(180deg); }
+
+/* v3：本物の空 */
+body[data-v-v3="a"] .k3 { opacity: .85; }
+
+/* v4：上の街の線 */
+body[data-v-v4="x"] .k1 { opacity: 0; }
+body[data-v-v4="1"] .k1 .k-ln { stroke-dasharray: 60 6; }
+body[data-v-v4="2"] .k1 .k-ln { stroke-dasharray: 34 18; opacity: .75; }
+body[data-v-v4="3"] .k1 .k-ln { stroke-dasharray: 14 30; opacity: .5; }
+body[data-v-v4="4"] .k1 .k-ln { stroke-dasharray: 4 46; opacity: .3; }
+
+/* v5：岩盤のひび */
+body[data-v-v5="1"] .k-ck1, body[data-v-v5="2"] .k-ck1 { stroke-dashoffset: 0; }
+body[data-v-v5="2"] .k-ck2 { stroke-dashoffset: 0; }
+body[data-v-v5="2"] .k-rk { stroke: rgba(230, 210, 180, .2); }
+
+/* v6：街が消えて枠だけ */
+body[data-v-v6="on"] .k0 { opacity: 0; }
+
+/* v7：背景の色 */
+body[data-v-v7="a"] #bg { background: linear-gradient(to bottom, #1a1c22 0%, #101116 60%, #0b0b0e 100%); }
+body[data-v-v7="b"] #bg { background: #030305; }
+body[data-v-v7="c"] #bg { background: linear-gradient(to bottom, #120b0a 0%, #0a0708 55%, #1c0f08 100%); }
+
+/* ロードのときは遷移なし */
+body.k-now #bg, body.k-now .k0, body.k-now .k1, body.k-now .k1 .k-ln, body.k-now .k3, body.k-now .k-ck, body.k-now .k-w { transition: none !important; }
+
+/* 枠：角の色を灯りに寄せる */
+#frame { border-color: rgba(170, 176, 196, .14); }
+#frame .cn { border-color: rgba(201, 163, 107, .45); }
+
+/* x1：奥だけが上下に一回り（返り点） */
+#back.k-x1 { animation: kX1 3.2s cubic-bezier(.5, 0, .3, 1) 1; transform-origin: 50% 40%; }
+@keyframes kX1 {
+  0% { transform: perspective(900px) rotateX(0); }
+  50% { transform: perspective(900px) rotateX(180deg); }
+  100% { transform: perspective(900px) rotateX(360deg); }
+}
+
+/* x2：灯りがまたたく（奥だけ） */
+#fxLayer.k-x2 .k-w.on { animation: kX2 1.5s steps(6) 1; }
+@keyframes kX2 { 0%, 40%, 80% { fill: rgba(240, 180, 94, .15); } 20%, 60%, 100% { fill: var(--lamp); } }
+
+@media (prefers-reduced-motion: reduce) {
+  #back.k-x1 { animation: none; }
+  #fxLayer.k-x2 .k-w.on { animation: none; }
+}

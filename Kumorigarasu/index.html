@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#141312">
+<title>くもりがらす</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;600&display=swap">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div id="bg" aria-hidden="true">
+  <div class="bulb b1"></div>
+  <div class="bulb b2"></div>
+  <div class="bulb b3"></div>
+  <div class="bulb b4"></div>
+  <div class="bulb b5"></div>
+  <div class="bulb b6"></div>
+  <div class="bulb b7"></div>
+  <div class="pool"></div>
+  <div id="rain"></div>
+</div>
+
+<!-- 表題 -->
+<section id="scr-title" class="scr">
+  <div class="glass tglass">
+    <h1 class="tr ttl">くもりがらす</h1>
+    <p class="tsub">昭和二十二年　潮見</p>
+    <nav class="tmenu">
+      <button type="button" data-t="new">はじめから</button>
+      <button type="button" data-t="load">つづきから</button>
+      <button type="button" data-t="ends">結末</button>
+      <button type="button" data-t="cfg">設定</button>
+    </nav>
+  </div>
+</section>
+
+<!-- 名前 -->
+<section id="scr-name" class="scr">
+  <form class="glass nglass" id="nm-form" autocomplete="off">
+    <p class="nq">名を、記してください。</p>
+    <input id="nm-in" type="text" maxlength="8" spellcheck="false" aria-label="名前">
+    <p class="nnote" id="nm-note">&nbsp;</p>
+    <div class="nbtn">
+      <button type="button" id="nm-back">戻る</button>
+      <button type="submit">これでよい</button>
+    </div>
+  </form>
+</section>
+
+<!-- 本編 -->
+<section id="scr-game" class="scr">
+  <div class="frame">
+    <div id="glass" class="glass">
+      <svg id="l1" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+        <path class="l1a" pathLength="1" d="M79 0 L76.5 9 L78 15 L73 27 L74.5 33 L69 46 L70.5 52 L66 64 L67 70 L62.5 83 L63.5 90 L61 100"/>
+        <path class="l1b" pathLength="1" d="M69 46 L74 50 L79 49.5 L83 53"/>
+      </svg>
+      <div id="drops" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+      <div id="page" aria-live="polite"></div>
+      <div id="cho" hidden></div>
+      <div id="card" hidden></div>
+    </div>
+    <nav id="bar">
+      <button type="button" data-a="log">履歴</button>
+      <button type="button" data-a="auto" aria-pressed="false">自動</button>
+      <button type="button" data-a="skip" aria-pressed="false">早送り</button>
+      <button type="button" data-a="save">記録</button>
+      <button type="button" data-a="load">読込</button>
+      <button type="button" data-a="cfg">設定</button>
+      <button type="button" data-a="title">表題へ</button>
+    </nav>
+  </div>
+</section>
+
+<!-- 履歴 -->
+<div id="ov-log" class="ov" hidden>
+  <div class="pane lpane">
+    <div class="ph"><h2>履歴</h2><button type="button" class="x" data-close>閉じる</button></div>
+    <div id="log-list"></div>
+  </div>
+</div>
+
+<!-- 記録 -->
+<div id="ov-save" class="ov" hidden>
+  <div class="pane">
+    <div class="ph"><h2 id="sv-h">記録</h2><button type="button" class="x" data-close>閉じる</button></div>
+    <div id="sv-list"></div>
+  </div>
+</div>
+
+<!-- 結末 -->
+<div id="ov-end" class="ov" hidden>
+  <div class="pane">
+    <div class="ph"><h2>結末</h2><button type="button" class="x" data-close>閉じる</button></div>
+    <p id="end-n"></p>
+    <ol id="end-list"></ol>
+  </div>
+</div>
+
+<!-- 設定 -->
+<div id="ov-cfg" class="ov" hidden>
+  <div class="pane">
+    <div class="ph"><h2>設定</h2><button type="button" class="x" data-close>閉じる</button></div>
+    <div class="cf">
+      <label for="cf-spd">文字の速さ</label>
+      <div class="cfr"><span>遅</span><input id="cf-spd" type="range" min="0" max="100" step="5"><span>速</span></div>
+      <label for="cf-auto">自動送りの速さ</label>
+      <div class="cfr"><span>遅</span><input id="cf-auto" type="range" min="0" max="100" step="5"><span>速</span></div>
+      <span class="lb">文字の大きさ</span>
+      <div class="cfs" id="cf-size">
+        <button type="button" data-s="0">小</button>
+        <button type="button" data-s="1">中</button>
+        <button type="button" data-s="2">大</button>
+        <button type="button" data-s="3">特大</button>
+      </div>
+      <div id="cf-demo"><p class="ln kn"><span class="tx"></span></p></div>
+    </div>
+  </div>
+</div>
+
+<!-- 確認 -->
+<div id="ov-ask" class="ov" hidden>
+  <div class="pane apane">
+    <p id="ask-m"></p>
+    <div class="nbtn">
+      <button type="button" id="ask-n">いいえ</button>
+      <button type="button" id="ask-y">はい</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast" hidden></div>
+
+<script src="js/scenario/ch01.js"></script>
+<script src="js/scenario/ch02.js"></script>
+<script src="js/scenario/ch03.js"></script>
+<script src="js/scenario/ch04.js"></script>
+<script src="js/scenario/ch05.js"></script>
+<script src="js/scenario/ch06.js"></script>
+<script src="js/scenario/ch07.js"></script>
+<script src="js/scenario/ch08.js"></script>
+<script src="js/scenario/ch09.js"></script>
+<script src="js/scenario/ch10.js"></script>
+<script src="js/scenario/end.js"></script>
+<script src="js/engine.js"></script>
+</body>
+</html>

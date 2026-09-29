@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="ja" data-size="m">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#1E2426">
+<title>しらなわ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;600&display=swap">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- タイトル -->
+<section id="title" class="screen">
+  <div class="t-hero">
+    <svg id="t-rope" class="rope" aria-hidden="true"></svg>
+    <h1 class="t-name">しらなわ</h1>
+  </div>
+  <p class="t-sub">平成元年　夏の終わり</p>
+  <nav class="t-menu">
+    <button type="button" id="t-new">はじめから</button>
+    <button type="button" id="t-cont" hidden>つづきから</button>
+    <button type="button" id="t-load">ロード</button>
+    <button type="button" id="t-af" hidden>後日談</button>
+    <button type="button" id="t-rec" hidden>記録</button>
+    <button type="button" id="t-cfg">設定</button>
+  </nav>
+</section>
+
+<!-- 本編 -->
+<section id="game" class="screen">
+  <div id="stage">
+    <div id="win">
+      <svg id="rope" class="rope" aria-hidden="true"></svg>
+      <div id="page"></div>
+    </div>
+  </div>
+  <nav id="bar">
+    <button type="button" id="b-log">ログ</button>
+    <button type="button" id="b-auto">オート</button>
+    <button type="button" id="b-skip">スキップ</button>
+    <button type="button" id="b-save">セーブ</button>
+    <button type="button" id="b-load">ロード</button>
+    <button type="button" id="b-st" hidden>状態</button>
+    <button type="button" id="b-cfg">設定</button>
+    <button type="button" id="b-title">タイトル</button>
+  </nav>
+</section>
+
+<!-- 章扉・終幕など -->
+<div id="card" class="over"></div>
+<div id="over" class="over"></div>
+
+<!-- 名前入力 -->
+<div id="m-name" class="modal" role="dialog" aria-modal="true" aria-labelledby="m-name-h">
+  <div class="mbox narrow">
+    <h2 id="m-name-h">名前を入力してください</h2>
+    <p class="note">下の名前を。空欄のままなら「<span id="nm-def"></span>」になります。</p>
+    <input id="nm-in" type="text" maxlength="8" autocomplete="off" spellcheck="false">
+    <div class="mact">
+      <button type="button" class="ghost" data-close>もどる</button>
+      <button type="button" id="nm-ok">はじめる</button>
+    </div>
+  </div>
+</div>
+
+<!-- バックログ -->
+<div id="m-log" class="modal" role="dialog" aria-modal="true" aria-labelledby="m-log-h">
+  <div class="mbox wide">
+    <div class="mhead"><h2 id="m-log-h">ログ</h2><button type="button" class="ghost" data-close>閉じる</button></div>
+    <div id="log-list" class="log"></div>
+  </div>
+</div>
+
+<!-- セーブ／ロード -->
+<div id="m-sl" class="modal" role="dialog" aria-modal="true" aria-labelledby="m-sl-h">
+  <div class="mbox">
+    <div class="mhead"><h2 id="m-sl-h">セーブ</h2><button type="button" class="ghost" data-close>閉じる</button></div>
+    <div id="sl-list" class="slots"></div>
+    <p id="sl-note" class="note"></p>
+  </div>
+</div>
+
+<!-- 設定 -->
+<div id="m-cfg" class="modal" role="dialog" aria-modal="true" aria-labelledby="m-cfg-h">
+  <div class="mbox">
+    <div class="mhead"><h2 id="m-cfg-h">設定</h2><button type="button" class="ghost" data-close>閉じる</button></div>
+    <div class="cfg">
+      <label class="row"><span>文字の速さ</span>
+        <span class="rng"><small>遅い</small><input id="c-spd" type="range" min="0" max="100" step="5"><small>速い</small></span></label>
+      <label class="row"><span>オートの待ち時間</span>
+        <span class="rng"><small>短い</small><input id="c-auto" type="range" min="40" max="220" step="10"><small>長い</small></span></label>
+      <div class="row"><span>文字の大きさ</span>
+        <span class="seg" id="c-size">
+          <button type="button" data-v="s">小</button><button type="button" data-v="m">中</button><button type="button" data-v="l">大</button>
+        </span></div>
+      <div class="row"><span>スキップ</span>
+        <span class="seg" id="c-skip">
+          <button type="button" data-v="0">既読のみ</button><button type="button" data-v="1">未読も</button>
+        </span></div>
+      <label class="row chk"><input id="c-calm" type="checkbox"><span>揺れ・ちらつきの演出を抑える</span></label>
+      <p class="sample" id="c-sample">バスが去ると、音が全部なくなった。</p>
+    </div>
+  </div>
+</div>
+
+<!-- 記録 -->
+<div id="m-rec" class="modal" role="dialog" aria-modal="true" aria-labelledby="m-rec-h">
+  <div class="mbox">
+    <div class="mhead"><h2 id="m-rec-h">記録</h2><button type="button" class="ghost" data-close>閉じる</button></div>
+    <ul id="rec-list" class="rec"></ul>
+  </div>
+</div>
+
+<!-- 状態 -->
+<div id="m-st" class="modal" role="dialog" aria-modal="true" aria-labelledby="m-st-h">
+  <div class="mbox narrow">
+    <div class="mhead"><h2 id="m-st-h">失くしたもの</h2><button type="button" class="ghost" data-close>閉じる</button></div>
+    <div id="st-list" class="st"></div>
+  </div>
+</div>
+
+<!-- 確認 -->
+<div id="m-ask" class="modal" role="alertdialog" aria-modal="true">
+  <div class="mbox narrow">
+    <p id="ask-msg"></p>
+    <div class="mact">
+      <button type="button" class="ghost" id="ask-no">やめる</button>
+      <button type="button" id="ask-yes">はい</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script src="js/engine.js"></script>
+<script src="js/scenario/ch1.js"></script>
+<script src="js/scenario/ch2.js"></script>
+<script src="js/scenario/ch3.js"></script>
+<script src="js/scenario/ch4.js"></script>
+<script src="js/scenario/ch5.js"></script>
+<script src="js/scenario/ch6.js"></script>
+<script src="js/scenario/ch7.js"></script>
+<script src="js/scenario/after1.js"></script>
+<script src="js/scenario/after2.js"></script>
+<script src="js/scenario/after3.js"></script>
+<script src="js/scenario/after4.js"></script>
+</body>
+</html>

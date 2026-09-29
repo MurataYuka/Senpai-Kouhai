@@ -1,0 +1,25 @@
+/* 作品ごとの見た目。engine/engine.css の後に読み込まれるので、ここで上書きする。
+   枠（#frame）・背景（#bg）・演出レイヤー（#fxLayer）は自由に変えてよい。
+   #box と #lines には揺れ・傾き・移動・明滅を付けない。 */
+
+:root {
+  --bg: #0c0d12;
+  --accent: #9fb4c8;
+  --accent-dim: #56636f;
+  --box-line: rgba(159, 180, 200, .26);
+}
+
+/* 背景：@vis bg 名前 で body に data-v-bg="名前" が付く */
+body[data-v-bg="a"] #bg { background: radial-gradient(ellipse at 50% 30%, #1a2230 0%, #0c0d12 70%); }
+body[data-v-bg="b"] #bg { background: radial-gradient(ellipse at 50% 70%, #2a2118 0%, #0c0d12 70%); }
+
+/* 枠：@vis frame alert で色を変える */
+body[data-v-frame="alert"] #frame { border-color: rgba(200, 80, 60, .6); box-shadow: inset 0 0 30px rgba(200, 60, 40, .2); }
+
+/* 作品独自の命令 @glow（effects.js）が演出レイヤーに付けるクラス */
+#fxLayer.glow { background: radial-gradient(circle at 50% 40%, rgba(159, 180, 200, .18), transparent 60%); animation: sampleGlow 3s ease-in-out infinite; }
+@keyframes sampleGlow { 50% { opacity: .4; } }
+
+/* @fx pulse（effects.js）で枠に付けるクラス */
+#frame.pulse { animation: samplePulse 1s ease-out 1; }
+@keyframes samplePulse { 0% { border-color: var(--accent); box-shadow: inset 0 0 40px rgba(159, 180, 200, .3); } }
