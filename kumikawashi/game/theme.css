@@ -115,10 +115,10 @@ body[data-v-v1="s"] .k6 { background: linear-gradient(180deg, #0b1424 0%, #1a2a4
 .k8a {
   position: absolute; left: -10%; right: -10%; top: 6%; height: 64%;
   background:
-    radial-gradient(ellipse 16px 20px at 50% 62%, rgba(196, 160, 110, .55) 0 92%, transparent 100%),
-    linear-gradient(90deg, transparent 44%, rgba(196, 160, 110, .5) 44% 56%, transparent 56%) 0 0 / 60px 82px no-repeat,
+    radial-gradient(ellipse 16px 20px at 50% 60%, rgba(196, 160, 110, .55) 0 92%, transparent 100%),
+    radial-gradient(ellipse 5px 9px at 50% 31%, rgba(196, 160, 110, .5) 0 90%, transparent 100%),
     linear-gradient(180deg, transparent 94%, rgba(90, 70, 50, .6) 94%);
-  background-size: 60px 82px, 60px 82px, 60px 82px;
+  background-size: 60px 82px;
   background-repeat: repeat;
   transform: perspective(700px) rotateX(10deg);
   -webkit-mask-image: radial-gradient(ellipse at 50% 50%, #000 30%, transparent 78%);
@@ -126,10 +126,9 @@ body[data-v-v1="s"] .k6 { background: linear-gradient(180deg, #0b1424 0%, #1a2a4
 }
 .k8b {
   position: absolute; left: -10%; right: -10%; top: 6%; height: 64%;
-  background: linear-gradient(90deg, transparent 41%, rgba(236, 230, 214, .55) 41% 49%, transparent 49%) 0 44px / 60px 82px repeat-x,
-    linear-gradient(90deg, transparent 41%, rgba(236, 230, 214, .55) 41% 49%, transparent 49%) 0 126px / 60px 82px repeat-x,
-    linear-gradient(90deg, transparent 41%, rgba(236, 230, 214, .55) 41% 49%, transparent 49%) 0 208px / 60px 82px repeat-x;
-  background-size: 60px 12px, 60px 12px, 60px 12px;
+  background: radial-gradient(ellipse 4px 7px at 60% 44%, rgba(236, 230, 214, .7) 0 90%, transparent 100%);
+  background-size: 60px 82px;
+  background-repeat: repeat;
   transform: perspective(700px) rotateX(10deg);
   -webkit-mask-image: radial-gradient(ellipse at 50% 50%, #000 30%, transparent 78%);
   mask-image: radial-gradient(ellipse at 50% 50%, #000 30%, transparent 78%);
@@ -140,14 +139,14 @@ body[data-v-v1="k"] #bg { background: #060505; }
 body[data-v-v1="k"] #bg::after { opacity: 0; }
 
 /* ---------- 奥：峠から見た盆地 ---------- */
-.k9 { background: linear-gradient(180deg, #070a18 0%, #151a36 45%, #3a3050 70%, #1a1622 100%); }
+.k9 { background: linear-gradient(180deg, #070a18 0%, #151a36 26%, #3a3050 40%, #0d0c14 47%, #0a0a10 100%); }
 .k9m {
-  position: absolute; left: 0; right: 0; top: 34%; height: 30%;
+  position: absolute; left: 0; right: 0; top: 24%; height: 24%;
   background: #0b0b12;
   clip-path: polygon(0 60%, 8% 30%, 17% 48%, 26% 18%, 35% 42%, 42% 34%, 50% 52%, 58% 36%, 66% 46%, 75% 20%, 84% 44%, 92% 28%, 100% 50%, 100% 100%, 0 100%);
 }
 .k9t {
-  position: absolute; left: 22%; right: 22%; top: 50%; height: 16%; border-radius: 50%;
+  position: absolute; left: 18%; right: 18%; top: 52%; height: 18%; border-radius: 50%;
   background:
     radial-gradient(circle 1.4px, rgba(255, 206, 130, .9), transparent) 0 0 / 22px 15px,
     radial-gradient(circle 1px, rgba(255, 226, 170, .7), transparent) 9px 6px / 17px 13px,
@@ -155,7 +154,7 @@ body[data-v-v1="k"] #bg::after { opacity: 0; }
   -webkit-mask-image: radial-gradient(ellipse at 50% 50%, #000 40%, transparent 72%);
   mask-image: radial-gradient(ellipse at 50% 50%, #000 40%, transparent 72%);
 }
-.k9c { position: absolute; left: 50%; top: 44%; height: 9%; aspect-ratio: 200 / 250; transform: translateX(-50%); filter: drop-shadow(0 0 8px rgba(255, 246, 226, .5)); }
+.k9c { position: absolute; left: 50%; top: 50%; height: 9%; aspect-ratio: 200 / 250; transform: translateX(-50%); filter: drop-shadow(0 0 8px rgba(255, 246, 226, .5)); }
 body[data-v-v1="p"] .k6 { opacity: 0; }
 body[data-v-v1="p"] .k9 { opacity: 1; }
 body[data-v-v1="p"] #bg::after { opacity: 0; }
