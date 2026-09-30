@@ -20,7 +20,9 @@
     p1: { init: 0, min: 0, max: 30 },
     p2: { init: 0, min: 0, max: 30 },
     p3: { init: 0, min: 0, max: 30 },
-    f1: { init: 0, min: 0, max: 1 }
+    f1: { init: 0, min: 0, max: 1 },
+    f2: { init: 0, min: 0, max: 1 },
+    f3: { init: 0, min: 0, max: 1 }
   },
 
   endings: {
