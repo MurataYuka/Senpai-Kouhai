@@ -8,8 +8,8 @@
 
   // 上辺の印の位置（左からの割合）。最大 7 つ
   var SLOT = [.18, .29, .41, .52, .63, .74, .85];
-  // 奥の図の穴の位置（viewBox 1200×700）。印 i は穴 i に嵌まる
-  var HOLE = [[214, 236], [128, 338], [272, 392], [408, 300], [232, 506], [884, 306], [762, 404]];
+  // 奥の図の穴の位置（viewBox 1200×700）。印 i は穴 i に嵌まる（穴は六つ。七つ目の印は穴に入らない）
+  var HOLE = [[214, 236], [128, 338], [272, 392], [408, 300], [884, 306], [762, 404]];
 
   // 札の中身
   var CARD = {
@@ -174,7 +174,7 @@
     holes.forEach(function (h) { h.classList.remove('lit'); });
     if (!on) { document.body.classList.remove('k8on'); return; }
     document.body.classList.add('k8on');
-    var n = skyVal.length;
+    var n = Math.min(skyVal.length, holes.length);
     if (ctx.restoring || ctx.skipping) {
       for (var i = 0; i < n; i++) holes[i] && holes[i].classList.add('lit');
       return;

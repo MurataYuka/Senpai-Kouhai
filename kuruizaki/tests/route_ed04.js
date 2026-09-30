@@ -1,6 +1,6 @@
 'use strict';
 const { route, runMain } = require('./lib');
-const spec = { ed: 'ed02', picks: { 'ch13-c1': 0, 'ch15-c1': '#home' }, rest: 'p2', vars: { p1: 1, p2: 26, p3: 0, f1: 0 } };
+const spec = { ed: 'ed04', picks: { 'ch13-c1': '#bad' }, rest: 'p1' };
 module.exports = () => route(spec);
 module.exports.spec = spec;
 runMain(module);
