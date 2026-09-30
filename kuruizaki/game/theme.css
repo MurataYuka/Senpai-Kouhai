@@ -1,25 +1,271 @@
-/* 作品ごとの見た目。engine/engine.css の後に読み込まれるので、ここで上書きする。
-   枠（#frame）・背景（#bg）・演出レイヤー（#fxLayer）は自由に変えてよい。
-   #box と #lines には揺れ・傾き・移動・明滅を付けない。 */
+/* 作品の見た目。#box と #lines には揺れ・傾き・移動・明滅を付けない。
+   名前はすべて記号（対応表は非公開メモ）。 */
 
 :root {
-  --bg: #0c0d12;
-  --accent: #9fb4c8;
-  --accent-dim: #56636f;
-  --box-line: rgba(159, 180, 200, .26);
+  --bg: #0b0b0d;
+  --ink: #e9e5de;
+  --ink-dim: #9d978d;
+  --accent: #e0a860;
+  --accent-dim: #735a3c;
+  --edge: transparent;
+  --box-bg: rgba(10, 10, 12, .86);
+  --box-line: rgba(224, 168, 96, .24);
+  --self: #ffe2c4;
+  --ice: rgba(206, 228, 246, .78);
+  --ice-dim: rgba(206, 228, 246, .32);
 }
 
-/* 背景：@vis bg 名前 で body に data-v-bg="名前" が付く */
-body[data-v-bg="a"] #bg { background: radial-gradient(ellipse at 50% 30%, #1a2230 0%, #0c0d12 70%); }
-body[data-v-bg="b"] #bg { background: radial-gradient(ellipse at 50% 70%, #2a2118 0%, #0c0d12 70%); }
+/* ---------- 背景（@vis v5） ---------- */
+#bg { background: radial-gradient(ellipse at 50% 40%, #17161a 0%, #0b0b0d 72%); }
+#bg::before, #bg::after { content: ''; position: absolute; inset: -12%; pointer-events: none; opacity: 0; transition: opacity 2.4s; }
 
-/* 枠：@vis frame alert で色を変える */
-body[data-v-frame="alert"] #frame { border-color: rgba(200, 80, 60, .6); box-shadow: inset 0 0 30px rgba(200, 60, 40, .2); }
+/* 1 灰 */
+body[data-v-v5="1"] #bg { background: linear-gradient(180deg, #2a2927 0%, #1b1a19 45%, #121110 100%); }
+body[data-v-v5="1"] #bg::before {
+  opacity: .55;
+  background:
+    radial-gradient(circle 1.5px at 12% 20%, rgba(200, 196, 188, .8), transparent),
+    radial-gradient(circle 1px at 34% 60%, rgba(200, 196, 188, .7), transparent),
+    radial-gradient(circle 1.5px at 58% 30%, rgba(200, 196, 188, .6), transparent),
+    radial-gradient(circle 1px at 76% 74%, rgba(200, 196, 188, .8), transparent),
+    radial-gradient(circle 1.2px at 90% 42%, rgba(200, 196, 188, .7), transparent);
+  background-size: 260px 260px;
+  animation: kb1 14s linear infinite;
+}
+@keyframes kb1 { to { background-position: -60px 260px; } }
 
-/* 作品独自の命令 @glow（effects.js）が演出レイヤーに付けるクラス */
-#fxLayer.glow { background: radial-gradient(circle at 50% 40%, rgba(159, 180, 200, .18), transparent 60%); animation: sampleGlow 3s ease-in-out infinite; }
-@keyframes sampleGlow { 50% { opacity: .4; } }
+/* 2 空 */
+body[data-v-v5="2"] #bg { background: linear-gradient(180deg, #1c2a3c 0%, #34465a 55%, #56606a 100%); }
+body[data-v-v5="2"] #bg::before {
+  opacity: .5;
+  background:
+    radial-gradient(ellipse 30% 9% at 20% 70%, rgba(230, 236, 244, .22), transparent 70%),
+    radial-gradient(ellipse 40% 11% at 72% 50%, rgba(230, 236, 244, .18), transparent 70%),
+    radial-gradient(ellipse 26% 8% at 48% 86%, rgba(230, 236, 244, .2), transparent 70%);
+  animation: kb2 30s linear infinite alternate;
+}
+@keyframes kb2 { to { transform: translateX(-8%); } }
 
-/* @fx pulse（effects.js）で枠に付けるクラス */
-#frame.pulse { animation: samplePulse 1s ease-out 1; }
-@keyframes samplePulse { 0% { border-color: var(--accent); box-shadow: inset 0 0 40px rgba(159, 180, 200, .3); } }
+/* 3 霜の台地 */
+body[data-v-v5="3"] #bg { background: linear-gradient(180deg, #1d2530 0%, #161b22 50%, #0f1115 100%); }
+body[data-v-v5="3"] #bg::before {
+  opacity: .5;
+  background:
+    radial-gradient(circle 1.4px at 20% 30%, rgba(236, 244, 255, .8), transparent),
+    radial-gradient(circle 1px at 44% 70%, rgba(236, 244, 255, .6), transparent),
+    radial-gradient(circle 1.6px at 70% 20%, rgba(236, 244, 255, .7), transparent),
+    radial-gradient(circle 1px at 86% 60%, rgba(236, 244, 255, .6), transparent);
+  background-size: 300px 300px;
+  animation: kb3 22s linear infinite;
+}
+@keyframes kb3 { to { background-position: 40px 300px; } }
+
+/* 4 霧 */
+body[data-v-v5="4"] #bg { background: linear-gradient(180deg, #3a3e42 0%, #2a2d31 60%, #1c1e21 100%); }
+body[data-v-v5="4"] #bg::before {
+  opacity: .7;
+  background:
+    radial-gradient(ellipse 50% 20% at 30% 50%, rgba(210, 214, 218, .22), transparent 70%),
+    radial-gradient(ellipse 60% 24% at 70% 30%, rgba(210, 214, 218, .18), transparent 70%);
+  animation: kb4a 26s ease-in-out infinite alternate;
+}
+body[data-v-v5="4"] #bg::after {
+  opacity: .6;
+  background: radial-gradient(ellipse 55% 22% at 50% 75%, rgba(210, 214, 218, .2), transparent 70%);
+  animation: kb4b 34s ease-in-out infinite alternate;
+}
+@keyframes kb4a { to { transform: translate(7%, 2%); } }
+@keyframes kb4b { to { transform: translate(-6%, -3%); } }
+
+/* 5 沢 */
+body[data-v-v5="5"] #bg { background: linear-gradient(180deg, #1f2e2c 0%, #1a2a2c 50%, #122024 100%); }
+body[data-v-v5="5"] #bg::before {
+  opacity: .45;
+  background: repeating-linear-gradient(176deg, transparent 0 30px, rgba(200, 236, 236, .09) 30px 31px, transparent 31px 70px);
+  animation: kb5 6s linear infinite;
+}
+@keyframes kb5 { to { background-position: 80px 0; } }
+
+/* 6 火 */
+body[data-v-v5="6"] #bg { background: radial-gradient(ellipse 120% 70% at 50% 110%, #4a1a0c 0%, #1e0f0a 42%, #0b0908 76%); }
+body[data-v-v5="6"] #bg::before {
+  opacity: .75;
+  background: radial-gradient(ellipse 70% 40% at 50% 106%, rgba(255, 120, 40, .3), transparent 70%);
+  animation: kb6 2.4s ease-in-out infinite alternate;
+}
+@keyframes kb6 { from { opacity: .5; } to { opacity: .85; } }
+
+/* 7 雲の上の都 */
+body[data-v-v5="7"] #bg { background: linear-gradient(180deg, #2c3a52 0%, #6a7486 52%, #b9b6ad 64%, #8e8e92 100%); }
+body[data-v-v5="7"] #bg::before {
+  opacity: .5;
+  background: radial-gradient(ellipse 80% 14% at 50% 66%, rgba(255, 250, 238, .35), transparent 70%);
+  animation: kb2 40s linear infinite alternate;
+}
+
+/* 8 洞 */
+body[data-v-v5="8"] #bg { background: radial-gradient(ellipse at 50% 60%, #1c1a17 0%, #0a0908 70%); }
+body[data-v-v5="8"] #bg::before {
+  opacity: .35;
+  background:
+    linear-gradient(100deg, transparent 20%, rgba(232, 226, 210, .12) 21%, transparent 23%),
+    linear-gradient(80deg, transparent 64%, rgba(232, 226, 210, .1) 65%, transparent 67%),
+    linear-gradient(94deg, transparent 42%, rgba(232, 226, 210, .08) 43%, transparent 44.5%);
+}
+
+/* 9 夜 */
+body[data-v-v5="9"] #bg { background: linear-gradient(180deg, #080b16 0%, #0e1322 60%, #15151a 100%); }
+body[data-v-v5="9"] #bg::before {
+  opacity: .8;
+  background:
+    radial-gradient(circle 1px at 10% 14%, #fff, transparent), radial-gradient(circle 1px at 27% 32%, #dfe8ff, transparent),
+    radial-gradient(circle 1.3px at 46% 10%, #fff, transparent), radial-gradient(circle 1px at 63% 26%, #dfe8ff, transparent),
+    radial-gradient(circle 1px at 81% 12%, #fff, transparent), radial-gradient(circle 1.2px at 92% 36%, #dfe8ff, transparent);
+  background-size: 420px 300px;
+  animation: kb9 7s ease-in-out infinite alternate;
+}
+@keyframes kb9 { from { opacity: .5; } to { opacity: .9; } }
+
+/* 10 色の空 */
+body[data-v-v5="10"] #bg {
+  background: linear-gradient(180deg, #2a0f36 0%, #7a1f3c 30%, #c2522c 55%, #3d6a8a 80%, #173a3a 100%);
+}
+body[data-v-v5="10"] #bg::before {
+  opacity: .7;
+  background:
+    radial-gradient(circle 60px at 20% 30%, rgba(255, 77, 94, .35), transparent),
+    radial-gradient(circle 80px at 70% 20%, rgba(77, 166, 255, .3), transparent),
+    radial-gradient(circle 50px at 50% 60%, rgba(255, 201, 74, .35), transparent),
+    radial-gradient(circle 70px at 85% 70%, rgba(77, 255, 160, .25), transparent);
+  animation: kb10 9s ease-in-out infinite alternate;
+}
+@keyframes kb10 { to { transform: translate(-4%, 3%) scale(1.06); } }
+
+/* ---------- 枠 ---------- */
+#frame { border-color: transparent; transition: filter 3s, opacity 3s; }
+#frame .cn { display: none; }
+
+/* 上辺の空の帯・下辺の灰の帯 */
+.k3 { position: absolute; left: 0; right: 0; top: 0; height: 22px; pointer-events: none;
+  background: linear-gradient(180deg, rgba(40, 58, 88, .55), rgba(40, 58, 88, 0));
+  border-top: 1px solid rgba(120, 150, 190, .28); transition: opacity 2s; }
+.k5 { position: absolute; left: 0; right: 0; bottom: 0; height: 16px; pointer-events: none;
+  background: linear-gradient(0deg, rgba(88, 84, 78, .5), rgba(88, 84, 78, 0));
+  border-bottom: 1px solid rgba(150, 142, 130, .3); transition: opacity 2s; }
+
+/* 左辺：焦げた線とにじむ色 */
+.k1 { position: absolute; left: -9px; top: 0; bottom: 0; width: 24px; pointer-events: none; transition: opacity 1.6s; }
+.k1 svg { width: 100%; height: 100%; display: block; overflow: visible; }
+.k1a { fill: none; stroke: rgba(30, 22, 18, .95); stroke-width: 4px; }
+.k1b { fill: none; stroke: rgba(196, 110, 60, .55); stroke-width: 1.2px; }
+.k1c { position: absolute; left: -10px; width: 40px; height: 70px; margin-top: -35px; opacity: .35; filter: blur(4px); animation: kf1 7s ease-in-out infinite alternate; }
+@keyframes kf1 { from { opacity: .12; } to { opacity: .45; } }
+
+/* 右辺：まっすぐな氷の線 */
+.k2 { position: absolute; right: 2px; top: 0; bottom: 0; width: 1px; background: var(--ice); box-shadow: 0 0 6px rgba(206, 228, 246, .4); transition: opacity 1.6s; }
+.k2::after { content: ''; position: absolute; right: -4px; top: 0; bottom: 0; width: 1px; background: var(--ice-dim); }
+
+/* 独白：左右対称の氷の線（@vis v2） */
+.k6 { position: absolute; left: 2px; top: 0; bottom: 0; width: 1px; background: var(--ice); box-shadow: 0 0 6px rgba(206, 228, 246, .4); opacity: 0; transition: opacity 1.6s; }
+.k6::after { content: ''; position: absolute; left: -4px; top: 0; bottom: 0; width: 1px; background: var(--ice-dim); }
+body[data-v-v2="on"] .k6 { opacity: 1; }
+body[data-v-v2="on"] .k1 { opacity: 0; }
+body[data-v-v2="on"] .k3 { opacity: .35; }
+body[data-v-v2="on"] .k5 { opacity: .25; }
+body[data-v-v2="on"] #box { background: rgba(14, 22, 34, .9); border-color: rgba(206, 228, 246, .3); }
+#box { transition: background-color 1.6s, border-color 1.6s; }
+body[data-v-v2="on"] #game::before {
+  content: '――晶'; position: absolute; top: 36px; left: 24px; font-size: 13px; letter-spacing: .3em;
+  color: rgba(206, 228, 246, .8); pointer-events: none;
+}
+
+/* 上辺の印（@vis v1） */
+.k4 { position: absolute; left: 0; right: 0; top: 0; height: 22px; pointer-events: none; }
+.k4a { position: absolute; top: -3px; width: 20px; height: 20px; margin-left: -10px; opacity: 0; transition: opacity 1.6s, transform 1.6s; transform: scale(.4); }
+.k4a.on { opacity: .95; transform: scale(1); filter: drop-shadow(0 0 3px rgba(255, 230, 190, .5)); }
+.k4a.dbl { width: 24px; height: 24px; margin-left: -12px; top: -5px; }
+.k4a svg { width: 100%; height: 100%; display: block; }
+body.k8on .k4a.on { opacity: 0; transition-delay: 1s; }
+.k4b { position: fixed; z-index: 2; pointer-events: none; transition: transform 1.5s cubic-bezier(.5, 0, .7, 1), opacity .8s; }
+.k4b svg { width: 100%; height: 100%; display: block; }
+
+/* 賭け帳の札（@vis v3） */
+.k7 {
+  position: absolute; top: 34px; right: 22px; width: 132px; padding: 7px 9px 6px;
+  background: #e9dfc6; color: #3a2e22; font-size: 11px; line-height: 1.5; letter-spacing: .06em;
+  box-shadow: 1px 2px 6px rgba(0, 0, 0, .5); transform: rotate(2.5deg); opacity: 0; transition: opacity 1.2s;
+  pointer-events: none;
+}
+.k7.on { opacity: .92; }
+.k7 small { display: block; font-size: 9px; color: #8a5a3a; letter-spacing: .2em; border-bottom: 1px dashed #b39a78; margin-bottom: 3px; }
+.k7 small.k7a { border: 0; margin: 3px 0 0; text-align: right; letter-spacing: .1em; }
+.k7 span { display: block; }
+.k7 em { font-style: normal; color: #b02a1c; }
+.k7 b { color: #b02a1c; font-size: 13px; }
+.k7 s { color: #8b7e6a; }
+
+/* ---------- 奥の図（@vis v4） ---------- */
+.k8 { position: absolute; left: 50%; top: 46%; width: min(1100px, 110vw); transform: translate(-50%, -50%) scale(.6); opacity: 0; transition: opacity 3s, transform 4s; pointer-events: none; }
+.k8 svg { width: 100%; height: auto; display: block; overflow: visible; }
+body.k8on .k8 { opacity: .78; transform: translate(-50%, -50%) scale(1); }
+.k8a { fill: rgba(128, 36, 38, .8); stroke: rgba(40, 14, 12, .9); stroke-width: 3; }
+.k8b { fill: rgba(44, 38, 36, .85); stroke: rgba(20, 16, 14, .9); stroke-width: 3; }
+.k8c { fill: none; stroke: rgba(22, 14, 12, .85); stroke-width: 5; stroke-linecap: round; }
+.k8r { fill: none; stroke: rgba(255, 200, 120, .15); stroke-width: 2; transition: stroke 1s; }
+.k8j { opacity: 0; transform-box: fill-box; transform-origin: 50% 0; transform: scaleY(.2); transition: opacity 1s, transform 1.2s; }
+.k8h.lit .k8r { stroke: rgba(255, 244, 214, .9); }
+.k8h.lit .k8j { opacity: .95; transform: scaleY(1); animation: kf8 .22s ease-in-out infinite alternate; }
+.k8h[data-k="2"].lit .k8j { animation-duration: .16s; }
+@keyframes kf8 { from { transform: scaleY(.86); opacity: .75; } to { transform: scaleY(1.08); opacity: 1; } }
+
+/* 背景が下へ流れる（上昇）／上へ流れる（落下） */
+body.k8on #bg::after {
+  opacity: .55;
+  background:
+    linear-gradient(180deg, transparent 0 40%, rgba(230, 236, 244, .14) 50%, transparent 60%),
+    radial-gradient(ellipse 30% 3% at 20% 50%, rgba(230, 236, 244, .2), transparent 70%),
+    radial-gradient(ellipse 26% 2% at 74% 20%, rgba(230, 236, 244, .18), transparent 70%);
+  background-size: 100% 380px, 100% 520px, 100% 440px;
+  animation: kf9 2.6s linear infinite;
+}
+@keyframes kf9 { to { background-position: 0 380px, 0 520px, 0 440px; } }
+body[data-v-v4="fall"] #bg::after { animation-direction: reverse; animation-duration: 1.8s; }
+body[data-v-v4="hold"] #bg::after { animation-duration: 14s; }
+
+/* ---------- 一時の演出（@fx） ---------- */
+.k9 { position: absolute; width: 0; height: 0; pointer-events: none; }
+.k9a { position: absolute; left: calc(var(--k9s) * -.5); top: calc(var(--k9s) * -.5); width: var(--k9s); height: var(--k9s); border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 255, 240, .95), rgba(255, 220, 160, .4) 30%, transparent 70%); animation: kf9a .7s ease-out forwards; }
+.k9b { position: absolute; left: -3px; top: -3px; width: 6px; height: 6px; border-radius: 50%;
+  box-shadow: 0 0 8px currentColor; animation: kf9b 1.6s cubic-bezier(.1, .7, .3, 1) forwards; }
+.k9g .k9a { background: radial-gradient(circle, rgba(255, 255, 255, .95), rgba(200, 200, 200, .35) 30%, transparent 70%); }
+@keyframes kf9a { 0% { transform: scale(.2); opacity: 1; } 100% { transform: scale(1.4); opacity: 0; } }
+@keyframes kf9b {
+  0% { transform: rotate(var(--k9r)) translateX(0) scale(1.4); opacity: 1; }
+  70% { opacity: .9; }
+  100% { transform: rotate(var(--k9r)) translateX(var(--k9d)) translateY(18px) scale(.5); opacity: 0; }
+}
+body[data-v-v2="on"] .k9 { filter: saturate(.7); }
+
+.k10 { position: absolute; bottom: 0; width: 360px; height: 260px; margin-left: -180px; pointer-events: none;
+  background: radial-gradient(ellipse at 50% 100%, rgba(255, 190, 120, .55), rgba(255, 240, 220, .2) 35%, transparent 70%);
+  animation: kf10 1.4s ease-out forwards; }
+@keyframes kf10 { 0% { opacity: 0; } 10% { opacity: 1; } 100% { opacity: 0; transform: translateY(-20px) scale(1.2); } }
+
+/* 鋭い揺れ／鈍い揺れ（枠と奥だけ） */
+#frame.k-c, #back.k-c { animation: kfc .42s steps(1, end) 1; }
+@keyframes kfc {
+  0% { transform: translate(3px, -2px); } 12% { transform: translate(-4px, 2px); } 24% { transform: translate(2px, 3px); }
+  36% { transform: translate(-2px, -3px); } 50% { transform: translate(1px, 1px); } 70% { transform: translate(-1px, 0); } 100% { transform: none; }
+}
+#frame.k-c { box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .5); }
+#frame.k-t, #back.k-t { animation: kft .7s ease-out 1; }
+@keyframes kft {
+  0% { transform: translate(0, 0); } 15% { transform: translate(0, 6px); } 35% { transform: translate(-2px, -3px); }
+  60% { transform: translate(1px, 2px); } 100% { transform: none; }
+}
+
+@media (max-width: 600px) {
+  .k7 { width: 108px; font-size: 10px; right: 14px; }
+  .k4a { transform: scale(.8); }
+}
