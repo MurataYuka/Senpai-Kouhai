@@ -106,10 +106,10 @@
     return {
       x: Math.random() * w,
       y: anywhere ? Math.random() * h : (snowDir === 'up' ? h + 6 : -6),
-      r: 0.6 + Math.random() * 1.9,
+      r: 1.0 + Math.random() * 1.8,
       v: 0.18 + Math.random() * 0.45,
       s: Math.random() * Math.PI * 2,
-      a: 0.25 + Math.random() * 0.5
+      a: 0.35 + Math.random() * 0.45
     };
   }
 
