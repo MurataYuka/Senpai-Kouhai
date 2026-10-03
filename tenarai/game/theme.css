@@ -1,0 +1,135 @@
+/* 作品の見た目。名前の対応は docs/secret/notes.md（非公開）。
+   #box と #lines には揺れ・傾き・移動・明滅を付けない。動くのは #frame と #back だけ。 */
+
+:root {
+  --bg: #0b0e13;
+  --ink: #e7e3da;
+  --ink-dim: #9b978d;
+  --accent: #c9a45c;
+  --accent-dim: #7a6640;
+  --edge: rgba(201, 164, 92, .38);
+  --box-bg: rgba(9, 11, 16, .86);
+  --box-line: rgba(201, 164, 92, .26);
+  --self: #f3e9d2;
+  --lace: rgba(238, 233, 222, .62);
+  --lace-dim: rgba(238, 233, 222, .26);
+}
+
+/* ---------- 奥：雨の窓 ---------- */
+#bg {
+  background:
+    radial-gradient(ellipse at 50% 18%, rgba(70, 86, 104, .35) 0%, transparent 60%),
+    linear-gradient(180deg, #121821 0%, #0b0e13 62%, #0a0c10 100%);
+}
+#fxLayer canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+#fxLayer .w1 { transition: opacity 1.4s; }
+#fxLayer .w1.z { opacity: 0; transition: opacity .25s; }
+
+/* 背中の板（@vis open） */
+#fxLayer .w2 { opacity: 0; transition: opacity 1.6s; }
+body[data-v-open] #fxLayer .w2 { opacity: 1; }
+#fxLayer .d1, #fxLayer .d2 {
+  position: absolute; top: 0; bottom: 0; width: 50%;
+  background:
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, .015) 0 2px, transparent 2px 9px),
+    linear-gradient(180deg, #d9d4ca 0%, #bdb6a9 100%);
+  box-shadow: inset 0 0 80px rgba(60, 50, 30, .35);
+  opacity: 0; pointer-events: none;
+  transition: transform 2.6s cubic-bezier(.6, .05, .3, 1), opacity .6s;
+}
+#fxLayer .d1 { left: 0; border-right: 1px solid #8f7a4c; }
+#fxLayer .d2 { right: 0; border-left: 1px solid #8f7a4c; }
+#fxLayer .d1.v, #fxLayer .d2.v { opacity: 1; }
+#fxLayer .d1.g { transform: translateX(-102%); }
+#fxLayer .d2.g { transform: translateX(102%); }
+#fxLayer .d1.g.v, #fxLayer .d2.g.v { opacity: .0; transition: transform 2.6s cubic-bezier(.6, .05, .3, 1), opacity 1s 2.2s; }
+
+/* ---------- 枠 ---------- */
+#frame { border-color: var(--edge); }
+#frame .cn { border-color: var(--accent); }
+
+/* 左右の縁：白いレース */
+#frame .k1, #frame .k2 {
+  position: absolute; top: 26px; bottom: 26px; width: 13px;
+  transition: filter 1.4s, opacity 1.4s;
+}
+#frame .k1 {
+  left: 1px;
+  border-right: 1px solid rgba(201, 164, 92, .45);
+  background:
+    radial-gradient(circle at 0 50%, var(--lace) 0 4.5px, transparent 5px) 0 0 / 13px 12px repeat-y,
+    radial-gradient(circle at 60% 50%, transparent 0 1.2px, var(--lace-dim) 1.6px 2.6px, transparent 3px) 0 6px / 13px 12px repeat-y;
+}
+#frame .k2 {
+  right: 1px;
+  border-left: 1px solid rgba(201, 164, 92, .45);
+  background:
+    radial-gradient(circle at 100% 50%, var(--lace) 0 4.5px, transparent 5px) 0 0 / 13px 12px repeat-y,
+    radial-gradient(circle at 40% 50%, transparent 0 1.2px, var(--lace-dim) 1.6px 2.6px, transparent 3px) 0 6px / 13px 12px repeat-y;
+}
+
+/* 上辺：回る円筒 */
+#frame .k3 {
+  position: absolute; top: 2px; left: 28px; width: calc(100% - 56px); height: 14px;
+  display: block;
+  border-radius: 8px / 50%;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, .5);
+}
+#chapLabel { top: 26px; }
+
+/* 下辺：櫛 */
+#frame .k4 {
+  position: absolute; bottom: 1px; left: 26px;
+  width: min(320px, 42%); height: 11px; overflow: visible; opacity: .85;
+}
+#frame .k4 .t { fill: #b8964f; }
+#frame .k4 .b { fill: #8a6f3a; }
+#frame .k4 .x2 { display: none; }
+#frame .k4 .t.on { fill: #f4dc9c; filter: drop-shadow(0 0 3px rgba(255, 226, 150, .9)); }
+
+/* 匡の側の場面（@vis pov k）：レースがくすむ */
+body[data-v-pov="k"] #frame .k1, body[data-v-pov="k"] #frame .k2 { filter: grayscale(1) brightness(.62); }
+body[data-v-pov="k"] #frame { border-color: rgba(150, 150, 150, .3); }
+body[data-v-pov="k"] #bg { filter: saturate(.4) brightness(.85); }
+
+/* ---------- エンディングごとの枠（@vis end） ---------- */
+/* a */
+body[data-v-end="a"] #frame .k4 .x1 { display: none; }
+body[data-v-end="a"] #frame .k4 .x2 { display: inline; }
+body[data-v-end="a"] { --lace: rgba(246, 238, 220, .78); }
+body[data-v-end="a"] #bg { background: radial-gradient(ellipse at 50% 20%, rgba(120, 112, 92, .35) 0%, transparent 62%), linear-gradient(180deg, #1a1c20 0%, #0e0f12 100%); }
+/* b */
+body[data-v-end="b"] #frame .k1, body[data-v-end="b"] #frame .k2 { filter: sepia(.6) brightness(.85); }
+body[data-v-end="b"] #bg { background: radial-gradient(ellipse at 50% 30%, rgba(110, 72, 36, .28) 0%, transparent 60%), linear-gradient(180deg, #17120d 0%, #0c0a08 100%); }
+/* c */
+body[data-v-end="c"] #frame .k1, body[data-v-end="c"] #frame .k2 { filter: grayscale(.5) brightness(.9); }
+body[data-v-end="c"] #bg { background: radial-gradient(ellipse at 50% 85%, rgba(150, 150, 160, .18) 0%, transparent 60%), linear-gradient(180deg, #14161b 0%, #0d0e11 100%); }
+/* d */
+body[data-v-end="d"] #frame { border-color: rgba(190, 210, 225, .45); box-shadow: inset 0 0 0 10px rgba(180, 205, 225, .05), inset 30px 0 60px -40px rgba(220, 235, 245, .25); }
+body[data-v-end="d"] #frame .k1, body[data-v-end="d"] #frame .k2 { filter: brightness(.7) saturate(.3); }
+body[data-v-end="d"] #frame .k4 { opacity: .45; }
+/* e */
+body[data-v-end="e"] #frame .k2 { opacity: 0; }
+body[data-v-end="e"] #bg { background: radial-gradient(ellipse at 50% 80%, rgba(170, 160, 140, .2) 0%, transparent 65%), linear-gradient(180deg, #151719 0%, #0c0d0f 100%); }
+/* f */
+body[data-v-end="f"] #frame .k4 .x1 { display: none; }
+body[data-v-end="f"] #frame .k4 .x2 { display: inline; }
+body[data-v-end="f"] #frame .k1, body[data-v-end="f"] #frame .k2 { filter: grayscale(.8) brightness(.8); }
+/* g */
+body[data-v-end="g"] #frame { border-color: rgba(232, 196, 110, .6); box-shadow: inset 0 0 50px rgba(230, 180, 90, .12); }
+body[data-v-end="g"] #frame .k4 .t { animation: tnA 2.4s ease-in-out infinite; }
+body[data-v-end="g"] #bg { background: radial-gradient(ellipse at 50% 40%, rgba(150, 110, 50, .3) 0%, transparent 65%), linear-gradient(180deg, #16120c 0%, #0b0907 100%); }
+/* h */
+body[data-v-end="h"] { --lace: rgba(255, 252, 244, .85); }
+body[data-v-end="h"] #frame { border-color: rgba(222, 196, 130, .7); }
+body[data-v-end="h"] #frame .k4 .t { fill: #f0d68e; }
+
+@keyframes tnA { 50% { fill: #ffe9a8; } }
+
+@media (prefers-reduced-motion: reduce) {
+  body[data-v-end="g"] #frame .k4 .t { animation: none; fill: #f0d68e; }
+}
+
+/* タイトル */
+#titleScr h1 { color: #efe8d8; }
+#titleScr .sub { color: var(--accent-dim); }
