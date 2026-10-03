@@ -1,0 +1,206 @@
+/* 見た目。名前の対応は docs/secret/notes.md。
+   #box と #lines には揺れ・傾き・移動・明滅を付けない。 */
+
+:root {
+  --bg: #140a0d;
+  --ink: #f0e8de;
+  --ink-dim: #a99d93;
+  --accent: #d2b277;
+  --accent-dim: #7d6a4c;
+  --edge: rgba(240, 232, 222, .22);
+  --box-bg: rgba(22, 12, 15, .86);
+  --box-line: rgba(210, 178, 119, .32);
+  --self: #f7d9df;
+  --lace: rgba(246, 240, 230, .88);
+  --lace-dim: rgba(246, 240, 230, .32);
+  --rib: #f8f4ec;
+  --rib-knot: #e7dfd2;
+  --band: #b3122a;
+  --band2: #e8c547;
+  --band3: #f4efe6;
+  --bh: 0px;
+}
+
+#bg { background: radial-gradient(ellipse at 50% 35%, #2a1219 0%, #170a0e 55%, #0d0608 100%); }
+
+/* ---------- 枠：レース・リボン・花びらの帯 ---------- */
+#frame { border-color: var(--edge); }
+#frame .cn { display: none; }
+#frame > i { position: absolute; pointer-events: none; }
+#frame .lc {
+  inset: -1px;
+  background:
+    radial-gradient(circle at 50% 0, var(--lace) 0 3.5px, transparent 4.5px) top left / 14px 9px repeat-x,
+    radial-gradient(circle at 50% 100%, var(--lace) 0 3.5px, transparent 4.5px) bottom left / 14px 9px repeat-x,
+    radial-gradient(circle at 0 50%, var(--lace) 0 3.5px, transparent 4.5px) top left / 9px 14px repeat-y,
+    radial-gradient(circle at 100% 50%, var(--lace) 0 3.5px, transparent 4.5px) top right / 9px 14px repeat-y,
+    radial-gradient(circle at 50% 50%, var(--lace-dim) 0 1.4px, transparent 2px) 0 11px / 14px 6px repeat-x,
+    radial-gradient(circle at 50% 50%, var(--lace-dim) 0 1.4px, transparent 2px) 0 calc(100% - 11px) / 14px 6px repeat-x;
+  box-shadow: inset 0 0 0 13px rgba(0, 0, 0, 0), inset 0 0 0 14px var(--lace-dim);
+  transition: filter 2s, opacity 2s;
+}
+#frame .rb {
+  top: -6px; width: 56px; height: 40px;
+  background:
+    radial-gradient(circle 5px at 28px 12px, var(--rib-knot) 0 92%, transparent 100%),
+    radial-gradient(ellipse 14px 9px at 14px 12px, var(--rib) 0 90%, transparent 100%),
+    radial-gradient(ellipse 14px 9px at 42px 12px, var(--rib) 0 90%, transparent 100%);
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, .35));
+  transition: filter 2s;
+}
+#frame .rb::before, #frame .rb::after {
+  content: ''; position: absolute; top: 15px; width: 7px; height: 22px; background: var(--rib);
+}
+#frame .rb::before { left: 21px; transform: rotate(18deg); }
+#frame .rb::after { left: 29px; transform: rotate(-18deg); }
+#frame .rl { left: -6px; }
+#frame .rr { right: -6px; }
+#frame .bd {
+  left: 14px; right: 14px; bottom: 2px; height: var(--bh);
+  background:
+    radial-gradient(ellipse 5px 3.5px at 30% 60%, var(--band) 0 90%, transparent 100%) 0 0 / 19px 9px,
+    radial-gradient(ellipse 4px 3px at 70% 40%, var(--band) 0 90%, transparent 100%) 5px 3px / 23px 8px,
+    radial-gradient(ellipse 3px 2px at 50% 50%, var(--band2) 0 90%, transparent 100%) 9px 2px / 41px 7px,
+    radial-gradient(ellipse 3px 2px at 50% 50%, var(--band3) 0 90%, transparent 100%) 17px 4px / 53px 9px;
+  opacity: .78;
+  -webkit-mask: linear-gradient(to top, #000 55%, transparent);
+  mask: linear-gradient(to top, #000 55%, transparent);
+  transition: height 1.6s, filter 2s;
+}
+body[data-v-pt="1"] { --bh: 3px; }   body[data-v-pt="2"] { --bh: 5px; }   body[data-v-pt="3"] { --bh: 7px; }
+body[data-v-pt="4"] { --bh: 9px; }   body[data-v-pt="5"] { --bh: 11px; }  body[data-v-pt="6"] { --bh: 13px; }
+body[data-v-pt="7"] { --bh: 15px; }  body[data-v-pt="8"] { --bh: 17px; }  body[data-v-pt="9"] { --bh: 19px; }
+body[data-v-pt="10"] { --bh: 21px; } body[data-v-pt="11"] { --bh: 23px; } body[data-v-pt="12"] { --bh: 26px; }
+
+/* 目線の切り替え：青いボールペンの手書きの線 */
+#frame .pv {
+  inset: 0; opacity: 0; transition: opacity 1.2s;
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='90' height='60'%3E%3Cpath d='M8 40 L62 34 M50 26 L63 34 L52 43' fill='none' stroke='%232c4fb8' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") 22% 0 / 90px 60px no-repeat,
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Cpath d='M9 9 L31 31 M31 9 L9 31' fill='none' stroke='%232c4fb8' stroke-width='2.4' stroke-linecap='round'/%3E%3C/svg%3E") 100% 38% / 40px 40px no-repeat,
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='54' height='44'%3E%3Cpath d='M6 7 L47 5 L49 37 L8 39 Z' fill='none' stroke='%232c4fb8' stroke-width='2' stroke-linejoin='round'/%3E%3Cpath d='M14 18 L40 17 M14 27 L33 26' stroke='%232c4fb8' stroke-width='1.6' stroke-linecap='round'/%3E%3C/svg%3E") 0 64% / 54px 44px no-repeat,
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='90' height='40'%3E%3Cpath d='M82 18 L28 22 M40 12 L27 22 L39 31' fill='none' stroke='%232c4fb8' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") 78% 100% / 90px 40px no-repeat,
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Cpath d='M10 10 L30 30 M30 10 L10 30' fill='none' stroke='%232c4fb8' stroke-width='2.4' stroke-linecap='round'/%3E%3C/svg%3E") 0 14% / 40px 40px no-repeat;
+}
+body[data-v-pov="s"] #frame .pv { opacity: .85; }
+body[data-v-pov="s"] #frame .lc { filter: brightness(.86); }
+
+/* 染み（目線の場面で、第八章から） */
+#frame .sn {
+  inset: -4px; opacity: 0; transition: opacity 1.6s;
+  background:
+    radial-gradient(ellipse 22px 14px at 14% 0, rgba(110, 66, 38, .75), transparent 70%),
+    radial-gradient(ellipse 12px 20px at 100% 27%, rgba(110, 66, 38, .7), transparent 70%),
+    radial-gradient(ellipse 26px 12px at 61% 100%, rgba(95, 58, 34, .7), transparent 70%),
+    radial-gradient(ellipse 10px 16px at 0 81%, rgba(110, 66, 38, .7), transparent 70%),
+    radial-gradient(ellipse 14px 9px at 88% 0, rgba(95, 58, 34, .65), transparent 70%);
+}
+body[data-v-pov="s"][data-v-sn="on"] #frame .sn { opacity: 1; }
+
+/* 付箋の枠 */
+#frame .tg {
+  inset: -2px; display: none;
+  background:
+    linear-gradient(#f2e27c, #eed667) 6% 0 / 44px 40px no-repeat,
+    linear-gradient(#f4c1cf, #efb2c3) 31% 0 / 40px 36px no-repeat,
+    linear-gradient(#bfe0f2, #acd4ea) 63% 0 / 44px 38px no-repeat,
+    linear-gradient(#f2e27c, #eed667) 92% 0 / 40px 40px no-repeat,
+    linear-gradient(#f4c1cf, #efb2c3) 0 30% / 38px 44px no-repeat,
+    linear-gradient(#f2e27c, #eed667) 0 72% / 40px 40px no-repeat,
+    linear-gradient(#bfe0f2, #acd4ea) 100% 22% / 40px 42px no-repeat,
+    linear-gradient(#f2e27c, #eed667) 100% 64% / 38px 40px no-repeat,
+    linear-gradient(#f4c1cf, #efb2c3) 18% 100% / 44px 36px no-repeat,
+    linear-gradient(#f2e27c, #eed667) 82% 100% / 40px 38px no-repeat;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, .4));
+}
+
+/* ---------- 枠の種類：@vis fr ---------- */
+/* f：香りが切れた後。レースは灰色、リボンは黒、帯は乾いた茶色 */
+body[data-v-fr="f"] {
+  --lace: rgba(150, 146, 140, .7);
+  --lace-dim: rgba(150, 146, 140, .25);
+  --rib: #141414;
+  --rib-knot: #2a2a2a;
+  --band: #5a3a26;
+  --band2: #4a3020;
+  --band3: #6b4a33;
+  --edge: rgba(150, 146, 140, .2);
+  --self: #e6dcd6;
+}
+body[data-v-fr="f"] #bg { background: radial-gradient(ellipse at 50% 35%, #1d1b19 0%, #121110 60%, #0a0909 100%); }
+body[data-v-fr="f"] #frame .rb { filter: drop-shadow(0 0 1px rgba(210, 206, 198, .9)) drop-shadow(0 0 3px rgba(210, 206, 198, .35)); }
+body[data-v-fr="f"] { --box-bg: rgba(16, 15, 14, .88); --box-line: rgba(150, 146, 140, .3); --accent: #b8b2a6; --accent-dim: #6d6961; }
+
+/* n：枠なし（白い余白だけ） */
+body[data-v-fr="n"] #frame { border-color: rgba(246, 240, 230, .12); }
+body[data-v-fr="n"] #frame > i { display: none; }
+body[data-v-fr="n"] #bg { background: radial-gradient(ellipse at 50% 30%, #23201d 0%, #141210 70%); }
+
+/* t：付箋の枠 */
+body[data-v-fr="t"] #frame > i { display: none; }
+body[data-v-fr="t"] #frame .tg { display: block; }
+body[data-v-fr="t"] #frame { border-color: rgba(242, 226, 124, .25); }
+
+/* x：枠いっぱいの花びら */
+body[data-v-fr="x"] { --bh: 40px; }
+body[data-v-fr="x"] #frame .bd { opacity: .95; }
+body[data-v-fr="x"] #frame .lc { --lace: rgba(214, 40, 66, .9); --lace-dim: rgba(232, 197, 71, .5); }
+body[data-v-fr="x"] #bg { background: radial-gradient(ellipse at 50% 35%, #3a121c 0%, #1c080d 60%, #0e0406 100%); }
+
+/* ---------- 降るもの（effects.js の canvas） ---------- */
+#fxLayer canvas.fl { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+/* メニューは帯の上でも読めるように */
+#menu button { background: rgba(14, 8, 10, .55); }
+
+/* ---------- ゲームオーバー画面 ---------- */
+.ov-scr[data-ver="a"] {
+  background:
+    radial-gradient(ellipse 9px 6px at 8% 12%, #c41e3a 0 90%, transparent 100%),
+    radial-gradient(ellipse 7px 5px at 14% 22%, #b3122a 0 90%, transparent 100%),
+    radial-gradient(ellipse 8px 6px at 90% 10%, #c41e3a 0 90%, transparent 100%),
+    radial-gradient(ellipse 6px 4px at 84% 19%, #e8c547 0 90%, transparent 100%),
+    radial-gradient(ellipse 9px 6px at 6% 86%, #b3122a 0 90%, transparent 100%),
+    radial-gradient(ellipse 6px 5px at 15% 78%, #c41e3a 0 90%, transparent 100%),
+    radial-gradient(ellipse 9px 6px at 93% 88%, #c41e3a 0 90%, transparent 100%),
+    radial-gradient(ellipse 7px 5px at 86% 80%, #b3122a 0 90%, transparent 100%),
+    radial-gradient(ellipse 5px 4px at 50% 6%, #d0344c 0 90%, transparent 100%),
+    radial-gradient(ellipse 6px 4px at 47% 94%, #c41e3a 0 90%, transparent 100%),
+    #f8f4ec;
+  color: #5b4a33;
+}
+.ov-scr[data-ver="a"] .ov-mark {
+  font-style: italic; font-size: clamp(26px, 6vw, 38px); letter-spacing: .3em;
+  color: #b8913f; text-shadow: 0 1px 0 #fff, 0 0 18px rgba(212, 175, 92, .35);
+}
+.ov-scr[data-ver="a"] button { color: #5b4a33; border-color: rgba(184, 145, 63, .6); background: rgba(255, 255, 255, .5); }
+.ov-scr[data-ver="a"] button:hover { border-color: #b8913f; }
+
+.ov-scr[data-ver="b"] { background: #dedad3; color: #4c4945; }
+.ov-scr[data-ver="b"]::before, .ov-scr[data-ver="b"]::after {
+  content: ''; position: absolute; top: 0; width: 120px; height: 120px; background: #111;
+}
+.ov-scr[data-ver="b"]::before { left: 0; clip-path: polygon(0 0, 100% 0, 0 100%); }
+.ov-scr[data-ver="b"]::after { right: 0; clip-path: polygon(0 0, 100% 0, 100% 100%); }
+.ov-scr[data-ver="b"] .ov-mark { color: #7c7871; font-size: clamp(24px, 5.6vw, 34px); }
+.ov-scr[data-ver="b"] button { color: #3d3a36; border-color: rgba(60, 58, 54, .45); }
+.ov-scr[data-ver="b"] button:hover { border-color: #111; }
+
+/* ---------- ゲームオーバー一覧：版Aはアルバム、版Bは遺影の額縁 ---------- */
+#pbody .ov-item { background: rgba(248, 244, 236, .06); border-color: rgba(210, 178, 119, .45); }
+#pbody .ov-item:not(.locked) .no { color: #d0344c; }
+#pbody[data-ver="b"] .ov-item { background: rgba(0, 0, 0, .35); border: 2px solid #3a3835; color: #c9c5be; position: relative; }
+#pbody[data-ver="b"] .ov-item:not(.locked) .no { color: #8b8780; }
+#pbody[data-ver="b"] .ov-item::after {
+  content: ''; position: absolute; top: -2px; right: -2px; width: 16px; height: 16px; background: #000;
+  clip-path: polygon(0 0, 100% 0, 100% 100%);
+}
+#pbody[data-ver="b"] .ov-alt { border-color: #555; }
+
+/* 席札 */
+.rec p { font-size: 14.5px; }
+
+@media (max-width: 560px) {
+  #frame .rb { transform: scale(.75); transform-origin: top center; }
+  .ov-scr[data-ver="b"]::before, .ov-scr[data-ver="b"]::after { width: 70px; height: 70px; }
+}
